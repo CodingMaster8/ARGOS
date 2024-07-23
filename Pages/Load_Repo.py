@@ -21,7 +21,7 @@ def load_repo():
         progress.progress(100, f"Fetching Repo Data took {duration} seconds")
 
         file = str(repo)
-        table_name = '/'.join(file.split('/')[-2:]).replace('/', '_')
+        table_name = '/'.join(file.split('/')[-2:]).replace('/', '_').replace('-', '_')
 
         create_table(table_name)
 
@@ -51,10 +51,23 @@ def load_repo():
         # Path to the JSON file
         file_path = 'trees.json'
 
-        # Writing data to JSON file
-        with open(file_path, 'w') as file:
-            json.dump(tree_key, file, indent=4)
+        add_data_to_json(file_path, tree_key)
 
+
+def add_data_to_json(file_path, new_data):
+    # Load existing data
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        data = {}
+
+    # Update with new data
+    data.update(new_data)
+
+    # Save the updated data back to the JSON file
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=4)
 
 st.set_page_config(page_title="Load Repo Data", page_icon="💿")
 

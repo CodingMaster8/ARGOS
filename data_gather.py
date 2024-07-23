@@ -124,25 +124,25 @@ class ContextGatherer:
         return context
 
     def commit_history(self, owner, name):
+            token = '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'
 
-        token = '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'
+            # GitHub API URL for commits
+            url = f"https://api.github.com/repos/{owner}/{name}/commits"
 
-        # GitHub API URL for commits
-        url = f"https://api.github.com/repos/{owner}/{name}/commits"
+            # Headers for authenticated requests
+            headers = {
+                'Authorization': f'token {token}'
+            }
 
-        # Headers for authenticated requests
-        headers = {
-            'Authorization': f'token {token}'
-        }
+            # Make a GET request to fetch the commit history
+            response = requests.get(url, headers=headers)
 
-        # Make a GET request to fetch the commit history
-        response = requests.get(url, headers=headers)
+            if response.status_code == 200 or response.status_code == 404:
+                author, name = url.split('/')[-3:-1]
+                commits = response.json()
+                commit_history_data = []
 
-        if response.status_code == 200:
-            author, name = url.split('/')[-3:-1]
-            commits = response.json()
-            with open(self.output_file, "a", encoding='utf-8') as file:
-                file.write(f"COMMIT HISTORY OF REPOSITORY: {author}-{name}\n")
+                commit_history_data.append(f"COMMIT HISTORY OF REPOSITORY: {author}-{name}\n")
                 for commit in commits:
                     sha = commit['sha']
                     author = commit['commit']['author']['name']
@@ -152,25 +152,23 @@ class ContextGatherer:
                     # Get the details of the commit
                     commit_url = f"https://api.github.com/repos/{author}/{name}/commits/{sha}"
                     commit_response = requests.get(commit_url, headers=headers)
-                    print(commit_response.status_code)
                     if commit_response.status_code == 200 or commit_response.status_code == 404:
                         commit_data = commit_response.json()
                         files_changed = commit_data.get('files', [])
-                        file.write(f"{author}, {date} : {message}\n")
+                        commit_history_data.append(f"{author}, {date} : {message}\n")
                         for file_changed in files_changed:
-                            file.write(f"    {file_changed['filename']} - {file_changed['status']}\n")
-                        file.write("------------------------------\n")
-
+                            commit_history_data.append(f"    {file_changed['filename']} - {file_changed['status']}\n")
+                        commit_history_data.append("------------------------------\n")
                     else:
-                        file.write(f"Failed to fetch commit details: {commit_response.status_code}\n")
-        else:
-            print(f"Failed to fetch commits: {response.status_code}")
+                        commit_history_data.append(f"Failed to fetch commit details: {commit_response.status_code}\n")
+            else:
+                print(f"Failed to fetch commits: {response.status_code}")
+                return
 
-        with open("context.txt", 'r') as file:
-            context = file.read()
+            context = ''.join(commit_history_data)  # Combine the list into a single string for the context
 
-        #Add to database
-        insert_to_db(self.table, url, "commits", context)
+            #Add to database
+            insert_to_db(self.table, url, "commits", context)
 
     def save_context(self, context):
         """Save the gathered context to a file."""

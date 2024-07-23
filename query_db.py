@@ -24,6 +24,8 @@ def create_table(name):
     conn = connect_db()
     cursor = conn.cursor()
 
+    name = name.replace("-", "_")
+
     create_table_query = f"""
         CREATE TABLE IF NOT EXISTS {name} (
         id SERIAL PRIMARY KEY,
@@ -148,4 +150,6 @@ def get_filenames(table):
     filenames = [filename[0] for filename in filenames]
 
     return filenames
+
+print(fetch_all_table_names())
 
