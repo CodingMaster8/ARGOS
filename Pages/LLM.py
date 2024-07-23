@@ -4,17 +4,77 @@ from query_db import fetch_all_table_names, fetch_file, get_filenames
 
 from openai import OpenAI
 import os
+import json
 
 # Configure the Streamlit page
 st.set_page_config(page_title="Github LLM Beta", page_icon="🧑‍💼")
 st.markdown("# Github LLM Beta 0.2")
 st.sidebar.header("Welcome to the Github LLM Beta")
 
-months = st.sidebar.slider('How many months back to search (0=no limit)?', 0, 130, 0)
+#months = st.sidebar.slider('How many months back to search (0=no limit)?', 0, 130, 0)
 
 ## Set the API key and model name
 MODEL = "gpt-4o-mini"
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "sk-proj-PPVvLU4BgKkl4dEhZRIOT3BlbkFJ4VcKrBv9z8XY8a8zdiVE"))
+
+
+class TokenCounter:
+    def __init__(self):
+        if 'token_sum' not in st.session_state:
+            st.session_state.token_sum = 0
+            st.sidebar.write(f"Token Count : {st.session_state.token_sum}")
+
+    def token_counter(self, tokens):
+        st.session_state.token_sum += int(tokens)
+        st.sidebar.write(f"Tokens Query : {tokens}")
+        st.sidebar.write(f"Token Count : {st.session_state.token_sum}")
+
+
+
+def save_chat_history():
+    if "messages" in st.session_state:
+        history = st.session_state.messages
+        filename = history[1].get('content')[:30].replace(" ", "_") + ".json" #Need to find a way to make them unique
+        #print(name)
+
+        # Directory where the jsons will be saved
+        directory = "chat"
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        filepath = os.path.join(directory, filename)
+
+        with open(filepath, "w") as f:
+            json.dump(history, f)
+
+        print(f"Chat history saved as {filepath}")
+def create_new_chat_history():
+    save_chat_history()
+    st.session_state.messages = [
+        {"role": "assistant",
+         "content": "New chat started. Choose any Repo. I will help you analyzing, optimizing or querying the data you provide me."}
+    ]
+    st.rerun()
+
+
+def load_chat_history():
+    directory = "chat"
+    history_files = [f[:-5].replace("_", " ") + "..." for f in os.listdir(directory) if f.endswith(".json")]
+    selected_file_display = st.sidebar.selectbox("Select a Chat", history_files)
+
+    file_mapping = {
+        f[:-5]: os.path.join(directory, f)
+        for f in os.listdir(directory)
+        if f.endswith(".json")
+    }
+
+    if st.sidebar.button("Load Chat"):
+        selected_file = file_mapping[selected_file_display.replace(" ", "_")[:-3]]
+        print(selected_file)
+        with open(selected_file, "r") as f:
+            st.session_state.messages = json.load(f)
+        st.rerun()
 
 
 def llm(data):
@@ -28,7 +88,8 @@ def llm(data):
     # Check if there is a prompt from the user
     if prompt := st.chat_input("Your question"):  # Prompt for user input and save to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
-        generate_response(prompt, data)
+        tokens = generate_response(prompt, data)
+        counter.token_counter(int(tokens))
 
 
     for message in st.session_state.messages:  # Display the prior chat messages
@@ -50,9 +111,10 @@ def generate_response(prompt, data):
                     ]
                 )
                 response = completion.choices[0].message.content
-                st.write(completion.usage.total_tokens)
+                tokens = completion.usage.total_tokens
                 st.session_state.messages.append({"role": "assistant", "content": response})  # Add response to message history
 
+    return tokens
 
 def get_repos():
     repos = fetch_all_table_names()
@@ -83,10 +145,18 @@ def get_data(table, query_type):
 
     return data
 
+
 def run():
     repo = get_repos()
     query_type = st.sidebar.selectbox("Query Data", ["Commits", "Code File"])
     data = get_data(repo, query_type)
     llm(data)
+    load_chat_history()
 
+
+counter = TokenCounter()
 run()
+
+# Add button to create new chat history in sidebar
+if st.sidebar.button("Start New Chat"):
+    create_new_chat_history()

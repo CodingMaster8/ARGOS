@@ -31,7 +31,7 @@ def load_repo():
         gatherer = ContextGatherer(
             directory='/Users/pablovargas/Documents/repos',
             output_file='../context.txt',
-            relevant_extensions=['.py', '.c'],
+            relevant_extensions=['.py', '.c', '.cpp', '.js', '.v'],
             max_file_size=500_000,  # 500KB
             max_tokens=60000,
             repo=str(repo),
