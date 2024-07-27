@@ -2,6 +2,8 @@ import streamlit as st
 from query_db import fetch_all_table_names
 import json
 
+st.header("Code Tree")
+
 st.sidebar.header("Visualize Github Tree Of The Repo")
 
 repos = fetch_all_table_names()

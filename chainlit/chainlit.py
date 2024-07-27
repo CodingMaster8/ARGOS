@@ -5,6 +5,8 @@ import literalai as li
 from data_gather import ContextGatherer
 from download_github import starts_with_pattern, download_github_repo
 from query_db import create_table, fetch_file
+from .chat_context import chatcontext
+from .data import data_gather
 
 client = AsyncOpenAI()
 

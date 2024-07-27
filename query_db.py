@@ -151,5 +151,56 @@ def get_filenames(table):
 
     return filenames
 
+def get_shorturl(table):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    fetch_query = f"""
+                SELECT url FROM {table};
+                """
+    cursor.execute(fetch_query)
+    urls = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    #urls = [url[0].split("/")[-2] + "/" + url[0].split("/")[-1] for url in urls]
+    urls = ['/'.join(url[0].rsplit('/', 2)[-2:]) for url in urls]
+
+    return urls
+
+def search_by_shorturl(table, shorturl):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    query = f"""
+        SELECT * FROM {table}
+        WHERE url LIKE '%{shorturl}';
+    """
+
+    cursor.execute(query)
+    file = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if file:
+        print(f"File fetched: {shorturl}")
+        return file
+    else:
+        print(f"File {shorturl} not found.")
+        return None
+
+"""
+
 print(fetch_all_table_names())
 
+d = fetch_all_data('polo280_kl25z_labs')
+for i in d:
+    print(i)
+
+files = fetch_file('polo280_kl25z_labs', 'RGB.c')
+print(files)
+
+file = search_by_shorturl('polo280_kl25z_labs', 'PCB Inspector/PCB_Inspect.c')
+print(file)
+
+"""

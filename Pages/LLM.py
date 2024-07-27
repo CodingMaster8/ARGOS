@@ -1,10 +1,14 @@
 import streamlit as st
 
-from query_db import fetch_all_table_names, fetch_file, get_filenames
+from query_db import fetch_all_table_names, fetch_file, get_shorturl, search_by_shorturl
 
 from openai import OpenAI
 import os
 import json
+
+from local_search import local_search
+
+
 
 # Configure the Streamlit page
 st.set_page_config(page_title="Github LLM Beta", page_icon="🧑‍💼")
@@ -134,15 +138,24 @@ def get_data(table, query_type):
             st.code(data, language='bash')
 
     if query_type == "Code File":
-        filenames = get_filenames(table)
-        file = st.sidebar.selectbox("Choose File", filenames)
 
-        data = fetch_file(table, file)[3]
+        shorturls = get_shorturl(table)
+        file_url = st.sidebar.selectbox("Choose File", shorturls)
 
-        st.code(f"Code of file {file}", language='bash')
+
+        file = file_url.split("/")[1]
+
+        data = search_by_shorturl(table, file_url)[3]
+        directory = file_url.split('/')[0]
+
+        st.code(f"Code of file {file} at {directory}", language='bash')
         with st.expander("Code"):
             st.code(data, language='bash')
 
+        if st.sidebar.checkbox("Enable Local Search"):
+            context = local_search(table, directory, data)
+            data += context
+            st.sidebar.success("Local Search Enabled")
     return data
 
 
