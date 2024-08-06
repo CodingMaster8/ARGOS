@@ -1,1 +1,3857 @@
-HolaHole
+COMMIT HISTORY OF REPOSITORY: David-OC17-ImageQualityEvaluation_Bosch
+David-OC17, 2024-05-07 : Minor changes to requirements.txt (security vulnerabilities)
+    requirements.txt - modified
+@@ -1,7 +1,7 @@
+ opencv-python == 4.8.1.78
+-Pillow == 9.0.1
++Pillow == 10.3.0 
+ scipy == 1.11.3
+ matplotlib == 3.8.0
+-streamlit == 1.28.1
++streamlit == 1.30.0
+ pandas == 2.0.3
+-numpy == 1.24.3
+\ No newline at end of file
++numpy == 1.24.3
+------------------------------
+David-OC17, 2023-11-15 : README license update
+    README.md - modified
+@@ -199,7 +199,6 @@ We welcome contributions from the Bosch Hackathon community. If you have ideas f
+ - Jose María Soto Valenzuela
+ - Pablo Vargas Cárdenas
+ 
+-### License
++## License
+ 
+-**AWAITING CHANGES**
+-This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms. 
+\ No newline at end of file
++This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0) - see the [LICENSE](LICENSE) file for details. The LGPL-3.0 is a permissive open-source license that allows you to use, modify, and distribute the software, whether in its original form or with modifications. However, any changes made to the original codebase must be released under the same LGPL-3.0 license. For more information about the license, please visit [https://opensource.org/licenses/LGPL-3.0](https://opensource.org/licenses/LGPL-3.0).
+------------------------------
+David-OC17, 2023-11-10 : Minor changes for added coments, change in license
+    LICENSE - modified
+@@ -1,21 +1,163 @@
+-MIT License
+-
+-Copyright (c) 2023 David
+-
+-Permission is hereby granted, free of charge, to any person obtaining a copy
+-of this software and associated documentation files (the "Software"), to deal
+-in the Software without restriction, including without limitation the rights
+-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+-copies of the Software, and to permit persons to whom the Software is
+-furnished to do so, subject to the following conditions:
+-
+-The above copyright notice and this permission notice shall be included in all
+-copies or substantial portions of the Software.
+-
+-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+-SOFTWARE.
++GNU Lesser General Public License
++=================================
++
++_Version 3, 29 June 2007_  
++_Copyright © 2007 Free Software Foundation, Inc. &lt;<http://fsf.org/>&gt;_
++
++Everyone is permitted to copy and distribute verbatim copies
++of this license document, but changing it is not allowed.
++
++
++This version of the GNU Lesser General Public License incorporates
++the terms and conditions of version 3 of the GNU General Public
++License, supplemented by the additional permissions listed below.
++
++### 0. Additional Definitions
++
++As used herein, “this License” refers to version 3 of the GNU Lesser
++General Public License, and the “GNU GPL” refers to version 3 of the GNU
++General Public License.
++
++“The Library” refers to a covered work governed by this License,
++other than an Application or a Combined Work as defined below.
++
++An “Application” is any work that makes use of an interface provided
++by the Library, but which is not otherwise based on the Library.
++Defining a subclass of a class defined by the Library is deemed a mode
++of using an interface provided by the Library.
++
++A “Combined Work” is a work produced by combining or linking an
++Application with the Library.  The particular version of the Library
++with which the Combined Work was made is also called the “Linked
++Version”.
++
++The “Minimal Corresponding Source” for a Combined Work means the
++Corresponding Source for the Combined Work, excluding any source code
++for portions of the Combined Work that, considered in isolation, are
++based on the Application, and not on the Linked Version.
++
++The “Corresponding Application Code” for a Combined Work means the
++object code and/or source code for the Application, including any data
++and utility programs needed for reproducing the Combined Work from the
++Application, but excluding the System Libraries of the Combined Work.
++
++### 1. Exception to Section 3 of the GNU GPL
++
++You may convey a covered work under sections 3 and 4 of this License
++without being bound by section 3 of the GNU GPL.
++
++### 2. Conveying Modified Versions
++
++If you modify a copy of the Library, and, in your modifications, a
++facility refers to a function or data to be supplied by an Application
++that uses the facility (other than as an argument passed when the
++facility is invoked), then you may convey a copy of the modified
++version:
++
++* **a)** under this License, provided that you make a good faith effort to
++ensure that, in the event an Application does not supply the
++function or data, the facility still operates, and performs
++whatever part of its purpose remains meaningful, or
++
++* **b)** under the GNU GPL, with none of the additional permissions of
++this License applicable to that copy.
++
++### 3. Object Code Incorporating Material from Library Header Files
++
++The object code form of an Application may incorporate material from
++a header file that is part of the Library.  You may convey such object
++code under terms of your choice, provided that, if the incorporated
++material is not limited to numerical parameters, data structure
++layouts and accessors, or small macros, inline functions and templates
++(ten or fewer lines in length), you do both of the following:
++
++* **a)** Give prominent notice with each copy of the object code that the
++Library is used in it and that the Library and its use are
++covered by this License.
++* **b)** Accompany the object code with a copy of the GNU GPL and this license
++document.
++
++### 4. Combined Works
++
++You may convey a Combined Work under terms of your choice that,
++taken together, effectively do not restrict modification of the
++portions of the Library contained in the Combined Work and reverse
++engineering for debugging such modifications, if you also do each of
++the following:
++
++* **a)** Give prominent notice with each copy of the Combined Work that
++the Library is used in it and that the Library and its use are
++covered by this License.
++
++* **b)** Accompany the Combined Work with a copy of the GNU GPL and this license
++document.
++
++* **c)** For a Combined Work that displays copyright notices during
++execution, include the copyright notice for the Library among
++these notices, as well as a reference directing the user to the
++copies of the GNU GPL and this license document.
++
++* **d)** Do one of the following:
++    - **0)** Convey the Minimal Corresponding Source under the terms of this
++License, and the Corresponding Application Code in a form
++suitable for, and under terms that permit, the user to
++recombine or relink the Application with a modified version of
++the Linked Version to produce a modified Combined Work, in the
++manner specified by section 6 of the GNU GPL for conveying
++Corresponding Source.
++    - **1)** Use a suitable shared library mechanism for linking with the
++Library.  A suitable mechanism is one that **(a)** uses at run time
++a copy of the Library already present on the user's computer
++system, and **(b)** will operate properly with a modified version
++of the Library that is interface-compatible with the Linked
++Version.
++
++* **e)** Provide Installation Information, but only if you would otherwise
++be required to provide such information under section 6 of the
++GNU GPL, and only to the extent that such information is
++necessary to install and execute a modified version of the
++Combined Work produced by recombining or relinking the
++Application with a modified version of the Linked Version. (If
++you use option **4d0**, the Installation Information must accompany
++the Minimal Corresponding Source and Corresponding Application
++Code. If you use option **4d1**, you must provide the Installation
++Information in the manner specified by section 6 of the GNU GPL
++for conveying Corresponding Source.)
++
++### 5. Combined Libraries
++
++You may place library facilities that are a work based on the
++Library side by side in a single library together with other library
++facilities that are not Applications and are not covered by this
++License, and convey such a combined library under terms of your
++choice, if you do both of the following:
++
++* **a)** Accompany the combined library with a copy of the same work based
++on the Library, uncombined with any other library facilities,
++conveyed under the terms of this License.
++* **b)** Give prominent notice with the combined library that part of it
++is a work based on the Library, and explaining where to find the
++accompanying uncombined form of the same work.
++
++### 6. Revised Versions of the GNU Lesser General Public License
++
++The Free Software Foundation may publish revised and/or new versions
++of the GNU Lesser General Public License from time to time. Such new
++versions will be similar in spirit to the present version, but may
++differ in detail to address new problems or concerns.
++
++Each version is given a distinguishing version number. If the
++Library as you received it specifies that a certain numbered version
++of the GNU Lesser General Public License “or any later version”
++applies to it, you have the option of following the terms and
++conditions either of that published version or of any later version
++published by the Free Software Foundation. If the Library as you
++received it does not specify a version number of the GNU Lesser
++General Public License, you may choose any version of the GNU Lesser
++General Public License ever published by the Free Software Foundation.
++
++If the Library as you received it specifies that a proxy can decide
++whether future versions of the GNU Lesser General Public License shall
++apply, that proxy's public statement of acceptance of any version is
++permanent authorization for you to choose that version for the
++Library.
+\ No newline at end of file
+    include/centering.py - modified
+@@ -98,8 +98,10 @@ def evaluateCentering(refImageName :str = 'REF_23.PNG', testImageName :str = '12
+     y_offset = (max_corr_y - (height / 2)) * 2
+ 
+     # Uncomment to debug
+-    # print("X Offset (in pixels):", x_offset)
+-    # print("Y Offset (in pixels):", y_offset)
++    print(testImageName)
++    print("X Offset (in pixels):", x_offset)
++    print("Y Offset (in pixels):", y_offset)
++    print("\n\n")
+     
+     # Add or substract to offsets to account for some error
+     x_offset -= 0.5
+    include/lighting.py - modified
+@@ -85,6 +85,13 @@ def evaluateLighting(testFileNum:str, path:str='../data/') -> bool:
+     mean_red = total_red // count
+     mean_green = total_green // count
+     mean_blue = total_blue // count
++    
++    # print(testFileNum)
++    # print(f"blue: {mean_blue}")
++    # print(f"green: {mean_green}")
++    # print(f"red: {mean_red}")
++    # print("\n\n")
++    
+ 
+     color_mean = (mean_red + mean_blue + mean_green) / 3
+ 
+------------------------------
+David-OC17, 2023-11-09 : Tabla de datos - para evaluación
+    Datos_imagenes.pdf - added
+Blank File
+------------------------------
+David-OC17, 2023-11-09 : Added results in evaluationResults.csv (to eliminate the need to download to grade)
+    evaluationResults.csv - added
+@@ -0,0 +1,22 @@
++﻿,Image_Index,Centering,Lightning,Orientation,Sharpness
++0,1,false,true,true,true
++1,2,true,true,true,true
++2,4,false,true,true,false
++3,8,false,true,false,true
++4,9,true,true,true,true
++5,11,true,false,true,false
++6,12,false,true,true,true
++7,14,true,true,true,false
++8,18,true,true,true,true
++9,19,true,true,true,false
++10,20,false,true,true,false
++11,21,false,true,true,false
++12,22,true,true,true,false
++13,24,false,false,true,false
++14,26,true,true,true,true
++15,27,false,true,true,false
++16,28,false,true,true,true
++17,29,false,true,true,false
++18,32,false,true,true,true
++19,36,false,true,false,true
++20,REF_23,true,true,true,true
+------------------------------
+David-OC17, 2023-11-09 : Deleted results.cvs (not used)
+    Results.csv - removed
+@@ -1,22 +0,0 @@
+-Image,Orientation,Centering,Brightness,Focus
+-1.PNG,True
+-2.PNG,True
+-4.PNG,True
+-8.PNG,False
+-9.PNG,True
+-11.PNG,True
+-12.PNG,True
+-14.PNG,True
+-18.PNG,True
+-19.PNG,True
+-20.PNG,True
+-21.PNG,True
+-22.PNG,True
+-24.PNG,True
+-26.PNG,True
+-27.PNG,True
+-28.PNG,True
+-29.PNG,True
+-32.PNG,True
+-36.PNG,False
+-
+------------------------------
+David-OC17, 2023-11-09 : Ready for presenting
+    README.md - modified
+@@ -17,8 +17,8 @@ This repository is dedicated to the evaluation of ADAS (Advanced Driver Assistan
+ * [**Quick Start**](#quick-start)
+   <br>&nbsp;&nbsp;&nbsp; a. [Installation](#installation)
+   <br>&nbsp;&nbsp;&nbsp; b. [User Interface](#user-interface)
+-  <br>&nbsp;&nbsp;&nbsp; c. [Run from terminal](#run-from-terminal)
+-
++  <!--  <br>&nbsp;&nbsp;&nbsp; c. [Run from terminal](#run-from-terminal) -->
++  
+ </div>
+ 
+ 
+@@ -92,6 +92,13 @@ The way in which we asses the lighting of an image respect to the reference is b
+ 
+ By employing this method, we can ascertain whether the new image complies with the established tolerances, all while comparing it to the reference image.
+ 
++See the following images to further observe the differences between the three versions of the images during the process of evaluating the light exposure. The images show _original_, _black and white_ and _contour_.
++
++<p align="center">
++  <img src="./images/original_light.PNG" alt="Image 1" width="200" height="150">
++  <img src="./images/bb_light.PNG" alt="Image 2" width="200" height="150">
++  <img src="./images/contour.PNG" alt="Image 3" width="200" height="150">
++</p>
+ 
+ ### 4. Orientation
+ Orientation is crucial for image interpretation. Images must be in the correct orientation to facilitate accurate analysis. To be considered correctly oriented, an image must adhere to the following guidelines:
+@@ -128,14 +135,39 @@ Python3
+ ```python
+ pip install -r requirements.txt
+ ```
+-3. Create `paths.py` inside `src/` directory. It should contain something like the following:
++3. Create `paths.py` inside `src/`, `app/` (and `test/` if needed) directories. It should contain something like the following:
+ ```python
+ main_path = '/<path_to_repo>/ImageQualityEvaluation_Bosch'
+ ```  
+ 
+ ## User Interface
+-To make this project user friendly, a simple GUI application is provided for its usage and there is also the possiblity of executing the project via Windows Command Prompt / Linux terminal according to the needs of our users. Here it will be included some brief explanations on how to use each one of them. Furthermore, after running the project, a csv file which contains all the evaluation results is created. 
++To make this project user friendly, a simple GUI application is provided for its usage and there is also the possiblity of executing the project via Windows Command Prompt / Linux terminal according to the needs of our users. Here it will be included some brief explanations on how to use each one of them. Furthermore, after running the project, a csv file which contains all the evaluation results is created.
++
++To use the locally run app, download the repository, download the requierements and from `./app/` run the following command:
++```bash
++streamlit run main.py
++```
++
++The app will run in your default browser. Select an option from the dropdown menu:
++<p align="center">
++  <img src="./images/options_menu.png" alt="Options" width="300">
++</p>
+ 
++**Calculate Quality of all Images**
++
++The app shows a 'matrix'/table of the results of the evaluation. The table shows which of the tests where passed by which image, all comparing to the same reference. The file may also be download via de `download .csv` option, just above the table.
++<p align="center">
++  <img src="./images/option2.png" alt="Option 2" width="300">
++</p>
++
++**Select an Specific Image**
++
++The second option enables the user to select one image at a time, showing the results in a neat format, and displaying the image to the right of the page.
++<p align="center">
++  <img src="./images/option1.png" alt="Option 1" width="300">
++</p>
++
++<!-- 
+ ## Run from Terminal
+ Use one of the following formats for calling the evaluation on a directory of images without using the UI:
+ 
+@@ -155,6 +187,8 @@ python3 imageEvaluation.py
+ 
+ Any of these executions produces a `.csv` file that contains the results of the evaluation for all the images, compared to the reference file.
+ 
++-->
++
+ ### Contribute
+ We welcome contributions from the Bosch Hackathon community. If you have ideas for improving the image quality evaluation process or want to contribute code or documentation, please feel free to open an issue or submit a pull request.
+ 
+    README.pdf - added
+Blank File
+    images/bb_light.PNG - added
+Blank File
+    images/contour.PNG - added
+Blank File
+    images/option1.png - added
+Blank File
+    images/option2.png - added
+Blank File
+    images/options_menu.png - added
+Blank File
+    images/original_light.PNG - added
+Blank File
+    include/focus.py - modified
+@@ -13,7 +13,8 @@ def sharp(testFileName:str, path:str='../data/') -> bool:
+     This function takes an image as input and firstly it crops a specific sized squared region which contains its center.
+     Then this new image is converted into grayscale and normalized to get raw color data. After this, we use numpy module
+     to obtain the first order differentiation of all the points in the image relative to adyacent pixels. Finally we calculate
+-    the Fast Fourier Transform (fft) of the differences 
++    the Fast Fourier Transform (fft) of the differences, normalize it, and compare it to MTF50 standard to evaluate the image based
++    on its sharpness
+     '''
+ 
+     path = f'{path}{testFileName}'
+@@ -103,8 +104,8 @@ def sharp(testFileName:str, path:str='../data/') -> bool:
+     #print(cut_off_index)
+ 
+     # Calculate the cut-off frequency
+-    cut_off_mtf = y_filtered[cut_off_index]
+-    cut_off_frequency = x_filtered[cut_off_index]
++    # cut_off_mtf = y_filtered[cut_off_index]
++    # cut_off_frequency = x_filtered[cut_off_index]
+ 
+     #print(f"Cut-off MTF: {cut_off_mtf}")
+ 
+    include/orientation.py - modified
+@@ -16,10 +16,13 @@
+ # Assume that all images are of size 640 * 480 pixels
+ def evaluateOrientation(testFileName:str, maxBrightness:int, path:str='../data/') -> bool:
+     '''
+-    Checks whether the kernel has a mean lightness below a threshold and returns if it is below it.
+-    Receives a path to where the images are.
+-    Is below the value: true
+-    Is NOT below the value: false
++    Receives -> Path(optional) and name of the image to evaluate
++                maxBrightness - Maximum allowed value for top right dark square testing
++
++    Returns ->  Bool - which indicates wheter the image is correctly oriented or not
++
++    Checks whether the kernel which should contain top right dark square has a mean lightness 
++    below a threshold and returns if it is below it.
+     '''    
+     # Determine the relative path to the images
+     path = f'{path}{testFileName}'
+    requirements.txt - modified
+@@ -2,4 +2,6 @@ opencv-python == 4.8.1.78
+ Pillow == 9.0.1
+ scipy == 1.11.3
+ matplotlib == 3.8.0
+-streamlit == 1.28.1
+\ No newline at end of file
++streamlit == 1.28.1
++pandas == 2.0.3
++numpy == 1.24.3
+\ No newline at end of file
+------------------------------
+David-OC17, 2023-11-09 : Several quality of life changes
+    README.md - modified
+@@ -4,12 +4,22 @@ This repository is dedicated to the evaluation of ADAS (Advanced Driver Assistan
+ 
+ ## Contents
+ 
+-1. [**Guides**](#guides)
+-2. [**Evaluation categories**](#evaluation-categories)
+-3. [**Quick Start and**](#quick-start)
+-4. [**Quick Start**](#quick-start)
+-5. [**Quick Start**](#quick-start)
+-6. [**Quick Start**](#quick-start)
++<div style="column-count: 2;">
++
++* [**Guides**](#guides)
++
++* [**Evaluation categories**](#evaluation-categories)
++  <br>&nbsp;&nbsp;&nbsp; 1. [Centering](#1-centering)
++  <br>&nbsp;&nbsp;&nbsp; 2. [Focus](#2-focus)
++  <br>&nbsp;&nbsp;&nbsp; 3. [Lighting](#3-lighting)
++  <br>&nbsp;&nbsp;&nbsp; 4. [Orientation](#4-orientation)
++
++* [**Quick Start**](#quick-start)
++  <br>&nbsp;&nbsp;&nbsp; a. [Installation](#installation)
++  <br>&nbsp;&nbsp;&nbsp; b. [User Interface](#user-interface)
++  <br>&nbsp;&nbsp;&nbsp; c. [Run from terminal](#run-from-terminal)
++
++</div>
+ 
+ 
+ ## Guides
+@@ -127,23 +137,35 @@ main_path = '/<path_to_repo>/ImageQualityEvaluation_Bosch'
+ To make this project user friendly, a simple GUI application is provided for its usage and there is also the possiblity of executing the project via Windows Command Prompt / Linux terminal according to the needs of our users. Here it will be included some brief explanations on how to use each one of them. Furthermore, after running the project, a csv file which contains all the evaluation results is created. 
+ 
+ ## Run from Terminal
+-Use one of the following formats
++Use one of the following formats for calling the evaluation on a directory of images without using the UI:
+ 
++**Option 1:** Provide the path to the directory of images you want to evaluate, and the name of the reference file.
+ ```bash
+ python3 imageEvaluation.py <path_to_images> <filenme>
+ ```
+-
+-or
+-
++**Option 2:** Only provide the path to the directory and take the reference file as the default of `REF_23.PNG`.
+ ```bash
+ python3 imageEvaluation.py <path_to_images>
+ ```
+ 
+-### Project App
++**Option 3:** Provide no arguments to the programm. Take the default path of `../data/` and the reference image as the default of `REF_23.PNG`.
++```bash
++python3 imageEvaluation.py
++```
+ 
++Any of these executions produces a `.csv` file that contains the results of the evaluation for all the images, compared to the reference file.
+ 
+ ### Contribute
+ We welcome contributions from the Bosch Hackathon community. If you have ideas for improving the image quality evaluation process or want to contribute code or documentation, please feel free to open an issue or submit a pull request.
+ 
++### Authors
++
++- David Ortiz Cota
++- Jorge Alejandro González Díaz
++- Jose María Soto Valenzuela
++- Pablo Vargas Cárdenas
++
+ ### License
+-This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms.      
+\ No newline at end of file
++
++**AWAITING CHANGES**
++This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms. 
+\ No newline at end of file
+    include/centering.py - modified
+@@ -25,17 +25,53 @@ def cross_image(im1:np.ndarray, im2:np.ndarray):
+ 
+ def evaluateCentering(refImageName :str = 'REF_23.PNG', testImageName :str = '12.PNG', tolerance:int=10, path:str='../data/') -> bool:
+     '''
+-    Evaluate if the test image is off-center from the reference image, by more than the tolerance permits it to be.
+-    Receives a path to where the images are.
+-    If the image is within bounds, returns true (else false). Default tolerance is +/- 10 pixels.
++    Parameters ->   refImageName: name of reference image in format 'filename.PNG'
++                    testImageName: name of image to compare in format 'filename.PNG'
++                    tolerance: number of pixels the image can be off-center to pass (default tolerance is +/- 10 pixels)
++                    path: path to the folder where test and reference images are
++    
++    Returns ->  bool: returns if the image is within the bounds of the tolerance for offset from the center.
++                      true if passes, false if it does not.
++                      
++    The function uses cross-reference to find a point from which to compare, and calculates the deviation from the center for both images.
+     '''
+     
+     # Load reference and new image
+-    reference_path = f'{path}{testImageName}'
++    reference_path = f'{path}{refImageName}'
+     reference_image = Image.open(reference_path)
++    
+     new_path = f'{path}{testImageName}'
+     new_image = Image.open(new_path)
+     
++    ###############################################
++    #             Optional operation              #
++    # Crop both images to reduce the comparison   #
++    # area. Try to reduce compute time, and       #
++    # increase accuracy.                          #
++    ###############################################
++        
++    width, height = reference_image.size
++        
++    # Define the position and size of the crop
++    crop_width = 320
++    crop_height = 240
++
++    # Calculate the center coordinates
++    center_x = width // 2
++    center_y = height // 2
++
++    # Calculate the left, right, top, and bottom coordinates for cropping
++    x_left = center_x - crop_width // 2
++    x_right = center_x + crop_width // 2
++    y_top = center_y - crop_height // 2
++    y_bottom = center_y + crop_height // 2
++
++    # Crop the center region
++    reference_image = reference_image.crop((x_left, y_top, x_right, y_bottom))
++    new_image = new_image.crop((x_left, y_top, x_right, y_bottom))
++    
++    ###############################################
++    
+     width, height = reference_image.size
+     
+     # Cut the images to avoid unnecessary work on the image, as well as providing less points in which the images may coincide
+@@ -62,11 +98,15 @@ def evaluateCentering(refImageName :str = 'REF_23.PNG', testImageName :str = '12
+     y_offset = (max_corr_y - (height / 2)) * 2
+ 
+     # Uncomment to debug
+-    #print("X Offset (in pixels):", x_offset)
+-    #print("Y Offset (in pixels):", y_offset)
++    # print("X Offset (in pixels):", x_offset)
++    # print("Y Offset (in pixels):", y_offset)
++    
++    # Add or substract to offsets to account for some error
++    x_offset -= 0.5
++    y_offset -= 0.5
+     
+     # Check if the offsets are inside the accepted margins
+-    if x_offset < tolerance and y_offset < tolerance:
++    if abs(x_offset) < tolerance and abs(y_offset) < tolerance:
+         return True
+     else:
+         return False
+\ No newline at end of file
+    include/focus.py - modified
+@@ -4,6 +4,17 @@
+ 
+ 
+ def sharp(testFileName:str, path:str='../data/') -> bool:
++    '''
++    Parameters -> testFileName - Name of the image to evaluate
++                  path - Absolute path of images directory (if none it is assumed that images are in data relative folder)
++
++    Returns -> bool (indicates whether the image passes the focus test or not)
++
++    This function takes an image as input and firstly it crops a specific sized squared region which contains its center.
++    Then this new image is converted into grayscale and normalized to get raw color data. After this, we use numpy module
++    to obtain the first order differentiation of all the points in the image relative to adyacent pixels. Finally we calculate
++    the Fast Fourier Transform (fft) of the differences 
++    '''
+ 
+     path = f'{path}{testFileName}'
+     image = cv2.imread(path)
+@@ -35,9 +46,8 @@ def sharp(testFileName:str, path:str='../data/') -> bool:
+     x_values = range(1, len(norm_pixels) + 1)
+     sorted_pixels = sorted(norm_pixels)
+ 
+-    # Diff the ESF to get LSF
++    # Convert into np array to use numpy function to differentiate ESF
+     esf_array = np.array(sorted_pixels)
+-
+     # Calculate the LSF by taking central differences
+     lsf = np.diff(esf_array)
+ 
+@@ -51,15 +61,14 @@ def sharp(testFileName:str, path:str='../data/') -> bool:
+     # Perform Min-Max scaling
+     normalized_data = (lsf - min_vals) / (max_vals - min_vals)
+ 
+-
+     # Plot the ESF and LSF
+     #fig, ax = plt.subplots()
+     #ax.plot(x_lsf, normalized_data)
+     #ax.plot(x_values, sorted_pixels)
+     #plt.show()
+ 
+-    # Make the MTF-50
+ 
++    # MTF 50
+     # Perform the discrete Fourier transform (DFT)
+     fft_lsf = np.fft.fft(lsf)
+ 
+@@ -72,7 +81,7 @@ def sharp(testFileName:str, path:str='../data/') -> bool:
+     # Calculate the corresponding frequency values
+     sampling_rate = 2  # Frequency
+     n = len(lsf)
+-    freq = np.fft.fftfreq(n, d=1.0 / sampling_rate)
++    freq = np.fft.fftfreq(n, d= (1.0 / sampling_rate))
+ 
+ 
+     # Filter the data to include only points where x > 0
+    include/lighting.py - modified
+@@ -2,9 +2,14 @@
+ 
+ def evaluateLighting(testFileNum:str, path:str='../data/') -> bool:
+     '''
+-    Receives a paramater 'image' of type Matlike, generated via the use of cv2.imread().
+-    Receives a path to where the images are.
+-    Returns if the image passed the evaluation as a boolean
++    Parameters ->   testFileNum: equivalent to testFileName. Name of image to evaluate in format 'filename.PNG'
++                    path: path to the folder where test and reference images are
++    
++    Returns ->  bool: returns if the image is within the bounds of the tolerance for lighting (range is pixel intensity 170-250).
++                      true if passes, false if it does not.
++                      
++    The function finds the edges of the center reference square and checks the lighting of a square of pixels that surrounds it.
++    The function fails (returns false) if the mean of the analyzed region is outside the accepted range.
+     '''
+     
+     # Assume all data is inside /data/
+    src/evaluateAll.py - modified
+@@ -14,6 +14,17 @@
+ 
+ # Remember to pass testFileNum with format '1.PNG', since the code does not add the extension by default
+ def evaluateAll(testFileNum:str, referenceFile:str='REF_23.PNG', path:str='../data/') -> list:
++    '''
++    Parameters ->   testFileNum: equivalent to testFileName. Name of image to evaluate in format 'filename.PNG'
++                    path: path to the folder where test and reference images are
++    
++    Returns ->  bool: returns if the image is within the bounds of the tolerance for lighting (range is pixel intensity 170-250).
++                      true if passes, false if it does not.
++                      
++    The function finds the edges of the center reference square and checks the lighting of a square of pixels that surrounds it.
++    The function fails (returns false) if the mean of the analyzed region is outside the accepted range.
++    '''
++    
+     '''
+     Evaluates the testFileNum image, comparing it to the reference image.
+     Receives a path to where the images are.
+    src/imageEvaluation.py - modified
+@@ -12,14 +12,51 @@
+ The script writes a .csv
+ '''
+ 
++from paths import main_path
+ import sys
+-import os
++sys.path.append(main_path)
++
++import sys
++import os 
++import csv
++from evaluateAll import evaluateAll
++
++def evaluateExec(path: str = '../data/', referenceImage: str = 'REF_23.PNG') -> None:
++    # Create an empty list to store evaluation results
++    evaluation_results = []
++
++    try:
++        # List all files in the specified directory
++        files = os.listdir(path)
++
++        # Iterate through each file in the directory
++        for file in files:
++            if file != referenceImage:
++                # Placeholder for evaluation logic, replace with actual evaluation code
++                evaluation_result = evaluateAll(os.path.join(path, file)) 
++
++                # Append the filename and evaluation result to the list
++                evaluation_results.append({'filename': file, 'result': evaluation_result})
++
++        # Create a CSV file with the evaluation results
++        csv_filename = 'evaluation_results.csv'
++        csv_path = os.path.join(path, csv_filename)
++        with open(csv_path, mode='w', newline='') as csv_file: 
++            fieldnames = ['FIleNumber', 'result'] 
++            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
++
++            # Write the header
++            writer.writeheader()
++
++            # Write the evaluation results for each image
++            for result in evaluation_results:
++                writer.writerow(result)
++
++        print(f"Evaluation results saved to {csv_path}")
++
++    except FileNotFoundError:
++        print(f"Error: Directory '{path}' not found.")
+ 
+-def evaluateExec(path:str='../data/', referenceImage:str='REF_23.PNG') -> None:
+-    '''
+-    Use the path provided during execution as the path of the images.
+-    '''
+-    pass
+ 
+ def main():
+     # There are two options for the use
+@@ -28,7 +65,7 @@ def main():
+     
+     if len(sys.argv) > 2:
+         path = sys.argv[1]
+-        reference_file = sys.argv[2]
++        reference_file = sys.argv[2] 
+         print(f"Received string: {path} and {reference_file}")
+         evaluateExec(path, reference_file)
+     
+@@ -48,4 +85,4 @@ def main():
+         evaluateExec()
+ 
+ if __name__ == "__main__":
+-    main()
+\ No newline at end of file
++    main()
+    test/evaluateAll_test2.py - renamed
+Previous filename: src/main.py - New filename: test/evaluateAll_test2.py
+------------------------------
+CodingMaster8, 2023-11-09 : Update main.py
+    app/main.py - modified
+@@ -53,10 +53,10 @@ def unique_img(img):
+ 
+ 
+     with col1:
+-        st.markdown(f""":{colors[0]}[Centering : Image must have maximum offset of +- 10 px]""")
+-        st.markdown(f""":{colors[1]}[Lightning : Image light must range between 170 and 230 mean range color]""")
+-        st.markdown(f""":{colors[2]}[Orientation : Image must be Oriented correctly]""")
+-        st.markdown(f""":{colors[3]}[Sharpness : Image must be above MTF50 reference range]""")
++        st.markdown(f"""Centering :  :{colors[0]}[Image must have maximum offset of +- 10 px]""")
++        st.markdown(f"""Lightning : :{colors[1]}[Image light must range between 170 and 230 mean range color]""")
++        st.markdown(f"""Orientation : :{colors[2]}[Image must be Oriented correctly]""")
++        st.markdown(f"""Sharpness : :{colors[3]}[Image must be above MTF50 reference range]""")
+ 
+     col3.metric(label="Centering : ", value=result[0])
+     col4.metric(label="Lightning : ", value=result[1], delta="")
+------------------------------
+CodingMaster8, 2023-11-09 : App updates
+    app/main.py - modified
+@@ -7,6 +7,7 @@
+ from src.evaluateAll import evaluateAll
+ import pandas as pd
+ import streamlit as st
++from PIL import Image
+ 
+ @st.cache_data
+ def main():
+@@ -18,7 +19,7 @@ def main():
+ 
+     try:
+         fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20,
+-                     21, 22, 24, 26, 27, 28, 29, 32, 36]
++                     21, 22, 24, 26, 27, 28, 29, 32, 36, "REF_23"]
+ 
+         # Evaluation section
+         for index in fileIndex:
+@@ -32,7 +33,7 @@ def main():
+             focus.append(results[3])
+ 
+         df = pd.DataFrame(
+-            {'File_Index': fileIndex, 'Centering': centering, "Lightning": lightning, "Orientation": orientation,
++            {'Image_Index': fileIndex, 'Centering': centering, "Lightning": lightning, "Orientation": orientation,
+              "Sharpness": focus})
+         return df
+ 
+@@ -43,14 +44,31 @@ def main():
+ def unique_img(img):
+     result = evaluateAll(f"{img}.PNG")
+ 
+-    col3.metric(label="Centering : ", value=result[0], delta="")
++    colors = []
++    for i in result:
++        if i == True:
++            colors.append("green")
++        else:
++            colors.append("red")
++
++
++    with col1:
++        st.markdown(f""":{colors[0]}[Centering : Image must have maximum offset of +- 10 px]""")
++        st.markdown(f""":{colors[1]}[Lightning : Image light must range between 170 and 230 mean range color]""")
++        st.markdown(f""":{colors[2]}[Orientation : Image must be Oriented correctly]""")
++        st.markdown(f""":{colors[3]}[Sharpness : Image must be above MTF50 reference range]""")
++
++    col3.metric(label="Centering : ", value=result[0])
+     col4.metric(label="Lightning : ", value=result[1], delta="")
+     col5.metric(label="Orientation : ", value=result[2], delta="")
+     col6.metric(label="Sharpness : ", value=result[3], delta="")
+ 
++    with col2:
++        image = Image.open(f'../data/{img}.PNG')
++        st.image(image, caption=f'Image {img}')
+ 
+-# Streamlit Code
+ 
++# Streamlit Code
+ 
+ st.title("Bosch Hackathon - ADAS Camera Image Quality Evaluation")
+ 
+@@ -66,8 +84,7 @@ def unique_img(img):
+         img_n = st.select_slider(
+             'Select an Image of the Index',
+             options=[1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20,
+-                     21, 22, 24, 26, 27, 28, 29, 32, 36])
+-        st.subheader(f"Image {img_n}")
++                     21, 22, 24, 26, 27, 28, 29, 32, 36, "REF_23"])
+ 
+         unique_img(img_n)
+ 
+    src/main.py - modified
+@@ -17,7 +17,7 @@ def main():
+ 
+         # Evaluation section
+         for index in fileIndex:
+-            results = evaluateAll(str(index))
++            results = evaluateAll(f"{index}.PNG")
+ 
+             # Append elements to results
+             centering.append(results[0])
+@@ -32,3 +32,4 @@ def main():
+         print(ex)
+ 
+ 
++main()
+\ No newline at end of file
+------------------------------
+David-OC17, 2023-11-09 : Completed merge, solved all conflict with app
+    app/main.py - modified
+@@ -1,11 +1,10 @@
+ # Custom paths
+ 
+ import sys
+-
+ from paths import main_path
+ sys.path.append(main_path)
+ 
+-from src.evaluateAll import evaluate
++from src.evaluateAll import evaluateAll
+ import pandas as pd
+ import streamlit as st
+ 
+@@ -19,12 +18,12 @@ def main():
+ 
+     try:
+         fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20,
+-                     21, 22, 24, 26, 27, 28, 29, 32, 36, "REF_23"]
++                     21, 22, 24, 26, 27, 28, 29, 32, 36]
+ 
+         # Evaluation section
+         for index in fileIndex:
+-            path = f"{index}"
+-            results = evaluate(path)
++            file = f"{index}.PNG"
++            results = evaluateAll(file)
+ 
+             # Append elements to results
+             centering.append(results[0])
+@@ -42,7 +41,7 @@ def main():
+ 
+ 
+ def unique_img(img):
+-    result = evaluate(f"{img}")
++    result = evaluateAll(f"{img}.PNG")
+ 
+     col3.metric(label="Centering : ", value=result[0], delta="")
+     col4.metric(label="Lightning : ", value=result[1], delta="")
+@@ -67,7 +66,7 @@ def unique_img(img):
+         img_n = st.select_slider(
+             'Select an Image of the Index',
+             options=[1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20,
+-                     21, 22, 24, 26, 27, 28, 29, 32, 36, "REF_23"])
++                     21, 22, 24, 26, 27, 28, 29, 32, 36])
+         st.subheader(f"Image {img_n}")
+ 
+         unique_img(img_n)
+    include/focus.py - modified
+@@ -22,7 +22,7 @@ def sharp(testFileName:str, path:str='../data/') -> bool:
+     norm_pixels = []
+     pixels = []
+ 
+-    # Iterate through the grayscale image and print the pixel values
++    # Iterate through all the pixels in the gray image and normalize color value
+     for y in range(height):
+         for x in range(width):
+             pixel_value = gray[y, x]
+@@ -31,11 +31,10 @@ def sharp(testFileName:str, path:str='../data/') -> bool:
+             pixels.append(pixel_value)
+ 
+ 
+-    # Plot the ESF
++    # Sort normalized values
+     x_values = range(1, len(norm_pixels) + 1)
+     sorted_pixels = sorted(norm_pixels)
+ 
+-
+     # Diff the ESF to get LSF
+     esf_array = np.array(sorted_pixels)
+ 
+    include/orientation.py - modified
+@@ -14,15 +14,15 @@
+ from PIL import ImageStat
+ 
+ # Assume that all images are of size 640 * 480 pixels
+-def evaluateOrientation(testFileNum:str, maxBrightness:int, path:str='../data/') -> bool:
++def evaluateOrientation(testFileName:str, maxBrightness:int, path:str='../data/') -> bool:
+     '''
+     Checks whether the kernel has a mean lightness below a threshold and returns if it is below it.
+     Receives a path to where the images are.
+     Is below the value: true
+     Is NOT below the value: false
+     '''    
+     # Determine the relative path to the images
+-    path = f'{path}{testFileNum}'
++    path = f'{path}{testFileName}'
+     image = Image.open(path)
+ 
+     # Get the dimensions of the image
+    requirements.txt - modified
+@@ -1,4 +1,4 @@
+-opencv-python == 4.8.1
++opencv-python == 4.8.1.78
+ Pillow == 9.0.1
+ scipy == 1.11.3
+ matplotlib == 3.8.0
+    src/evaluateAll.py - modified
+@@ -25,37 +25,15 @@ def evaluateAll(testFileNum:str, referenceFile:str='REF_23.PNG', path:str='../da
+     results = [False, False, False, False]
+     
+     # offset to reference (centering) (tolerance +/- 10)
+-    results[0] = evaluateCentering(testImageName=testFileNum, refImageName=referenceFile, path=path)
++    results[0] = evaluateCentering(testImageName=testFileNum, refImageName=referenceFile, tolerance=10, path=path)
+     
+     # lighting
+     results[1] = evaluateLighting(testFileNum=testFileNum, path=path)
+     
+     # orientation (50 seems to be a good number for most cases)
+-    results[2] = evaluateOrientation(testFileNum=testFileNum, maxBrightness=50, path=path)
++    results[2] = evaluateOrientation(testFileName=testFileNum, maxBrightness=50, path=path)
+     
+     # focus (Sharpness of Image)
+-    results[3] = sharp(testFileNum=testFileNum, path=path)
++    results[3] = sharp(testFileName=testFileNum, path=path)
+ 
+-    return results
+-
+-'''
+-
+-def evaluate(testFileNum: str) -> list:
+-
+-    results = [False, False, False, False]
+-    referenceFile = 'REF_23'
+-
+-    # offset to reference (centering) (tolerance +/- 10)
+-    results[0] = evaluateCentering(testFileNum, referenceFile, 10)
+-
+-    # lighting
+-    results[1] = evaluateLighting(testFileNum)
+-
+-    # orientation (50 seems to be a good number for most cases)
+-    results[2] = evaluateOrientation(testFileNum, 50)
+-
+-    # focus (Sharpness of Image)
+-    results[3] = sharp(testFileNum)
+-
+-    return results
+-'''
+\ No newline at end of file
++    return results
+\ No newline at end of file
+------------------------------
+David-OC17, 2023-11-09 : Merge with app, refactor missing
+    .gitignore - modified
+@@ -1,5 +1,6 @@
+ # Ignore paths for absolute module imports
+ /test/paths.py
++/app/paths.py
+ /src/paths.py
+ /test/playground.py
+ 
+    README.md - modified
+@@ -126,8 +126,21 @@ main_path = '/<path_to_repo>/ImageQualityEvaluation_Bosch'
+ ## User Interface
+ To make this project user friendly, a simple GUI application is provided for its usage and there is also the possiblity of executing the project via Windows Command Prompt / Linux terminal according to the needs of our users. Here it will be included some brief explanations on how to use each one of them. Furthermore, after running the project, a csv file which contains all the evaluation results is created. 
+ 
++## Run from Terminal
++Use one of the following formats
++
++```bash
++python3 imageEvaluation.py <path_to_images> <filenme>
++```
++
++or
++
++```bash
++python3 imageEvaluation.py <path_to_images>
++```
++
+ ### Project App
+-<!>Include an <>
++
+ 
+ ### Contribute
+ We welcome contributions from the Bosch Hackathon community. If you have ideas for improving the image quality evaluation process or want to contribute code or documentation, please feel free to open an issue or submit a pull request.
+    app/evaluate.py - removed
+@@ -1,36 +0,0 @@
+-'''
+-A main function for the app to run on an image, testing it on the 4 categories.
+-'''
+-
+-# from paths import main_path
+-# sys.path.append(main_path)
+-
+-
+-from centering import evaluateCentering
+-from orientation import evaluateOrientation
+-from lighting import evaluateLighting
+-from focus import sharp
+-
+-
+-def evaluate(testFileNum: str) -> list:
+-    '''
+-    Evaluates the testFileNum image, comparing it to the reference image.
+-    The tests are: centering offset to reference, lighting, orientation, and focus.
+-    '''
+-
+-    results = [False, False, False, False]
+-    referenceFile = 'REF_23'
+-
+-    # offset to reference (centering) (tolerance +/- 10)
+-    results[0] = evaluateCentering(testFileNum, referenceFile, 10)
+-
+-    # lighting
+-    results[1] = evaluateLighting(testFileNum)
+-
+-    # orientation (50 seems to be a good number for most cases)
+-    results[2] = evaluateOrientation(testFileNum, 50)
+-
+-    # focus (Sharpness of Image)
+-    results[3] = sharp(testFileNum)
+-
+-    return results
+    app/main.py - modified
+@@ -1,10 +1,14 @@
+ # Custom paths
+ 
+-from evaluateAll import evaluate
++import sys
++
++from paths import main_path
++sys.path.append(main_path)
++
++from src.evaluateAll import evaluate
+ import pandas as pd
+ import streamlit as st
+ 
+-
+ @st.cache_data
+ def main():
+     # Array for storing the results of each image
+    requirements.txt - modified
+@@ -1,4 +1,5 @@
+ opencv-python == 4.8.1
+ Pillow == 9.0.1
+ scipy == 1.11.3
+-matplotlib == 3.8.0
+\ No newline at end of file
++matplotlib == 3.8.0
++streamlit == 1.28.1
+\ No newline at end of file
+    src/evaluateAll.py - modified
+@@ -36,4 +36,26 @@ def evaluateAll(testFileNum:str, referenceFile:str='REF_23.PNG', path:str='../da
+     # focus (Sharpness of Image)
+     results[3] = sharp(testFileNum=testFileNum, path=path)
+ 
+-    return results
+\ No newline at end of file
++    return results
++
++'''
++
++def evaluate(testFileNum: str) -> list:
++
++    results = [False, False, False, False]
++    referenceFile = 'REF_23'
++
++    # offset to reference (centering) (tolerance +/- 10)
++    results[0] = evaluateCentering(testFileNum, referenceFile, 10)
++
++    # lighting
++    results[1] = evaluateLighting(testFileNum)
++
++    # orientation (50 seems to be a good number for most cases)
++    results[2] = evaluateOrientation(testFileNum, 50)
++
++    # focus (Sharpness of Image)
++    results[3] = sharp(testFileNum)
++
++    return results
++'''
+\ No newline at end of file
+------------------------------
+CodingMaster8, 2023-11-09 : Main App updated
+
+Streamlit App
+    app/evaluate.py - added
+@@ -0,0 +1,36 @@
++'''
++A main function for the app to run on an image, testing it on the 4 categories.
++'''
++
++# from paths import main_path
++# sys.path.append(main_path)
++
++
++from centering import evaluateCentering
++from orientation import evaluateOrientation
++from lighting import evaluateLighting
++from focus import sharp
++
++
++def evaluate(testFileNum: str) -> list:
++    '''
++    Evaluates the testFileNum image, comparing it to the reference image.
++    The tests are: centering offset to reference, lighting, orientation, and focus.
++    '''
++
++    results = [False, False, False, False]
++    referenceFile = 'REF_23'
++
++    # offset to reference (centering) (tolerance +/- 10)
++    results[0] = evaluateCentering(testFileNum, referenceFile, 10)
++
++    # lighting
++    results[1] = evaluateLighting(testFileNum)
++
++    # orientation (50 seems to be a good number for most cases)
++    results[2] = evaluateOrientation(testFileNum, 50)
++
++    # focus (Sharpness of Image)
++    results[3] = sharp(testFileNum)
++
++    return results
+    app/main.py - modified
+@@ -0,0 +1,73 @@
++# Custom paths
++
++from evaluateAll import evaluate
++import pandas as pd
++import streamlit as st
++
++
++@st.cache_data
++def main():
++    # Array for storing the results of each image
++    centering = []  # Format -> [orientation, centering, brightness, focus]
++    lightning = []
++    orientation = []
++    focus = []
++
++    try:
++        fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20,
++                     21, 22, 24, 26, 27, 28, 29, 32, 36, "REF_23"]
++
++        # Evaluation section
++        for index in fileIndex:
++            path = f"{index}"
++            results = evaluate(path)
++
++            # Append elements to results
++            centering.append(results[0])
++            lightning.append(results[1])
++            orientation.append(results[2])
++            focus.append(results[3])
++
++        df = pd.DataFrame(
++            {'File_Index': fileIndex, 'Centering': centering, "Lightning": lightning, "Orientation": orientation,
++             "Sharpness": focus})
++        return df
++
++    except Exception as ex:
++        print(ex)
++
++
++def unique_img(img):
++    result = evaluate(f"{img}")
++
++    col3.metric(label="Centering : ", value=result[0], delta="")
++    col4.metric(label="Lightning : ", value=result[1], delta="")
++    col5.metric(label="Orientation : ", value=result[2], delta="")
++    col6.metric(label="Sharpness : ", value=result[3], delta="")
++
++
++# Streamlit Code
++
++
++st.title("Bosch Hackathon - ADAS Camera Image Quality Evaluation")
++
++st.write("This App evaluates the Centering, Lightning, Orientation and Sharpness of ISO 12233 images")
++
++col1, col2 = st.columns([0.5, 0.5])
++col3, col4, col5, col6, col7 = st.columns([0.15, 0.15, 0.15, 0.15, 0.4])
++
++with col1:
++    options = st.selectbox("Select an Option", ["Calculate Quality of all Images", "Select an Specific Image"])
++
++    if options == "Select an Specific Image":
++        img_n = st.select_slider(
++            'Select an Image of the Index',
++            options=[1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20,
++                     21, 22, 24, 26, 27, 28, 29, 32, 36, "REF_23"])
++        st.subheader(f"Image {img_n}")
++
++        unique_img(img_n)
++
++with col2:
++    if options == "Calculate Quality of all Images":
++        st.dataframe(main())
+------------------------------
+David-OC17, 2023-11-09 : Several changes to README, tests, and main functions
+    README.md - modified
+@@ -2,26 +2,21 @@
+ ## Introduction
+ This repository is dedicated to the evaluation of ADAS (Advanced Driver Assistance Systems) camera images for the Bosch Hackathon. The goal is to assess the quality of the images captured by ADAS cameras and ensure they meet the required standards. All images in this dataset are standardized to be 640 by 480 pixels.
+ 
+-## Quick start
++## Contents
+ 
+-### Installation
+-**Prerequisites:**
+-Python3
++1. [**Guides**](#guides)
++2. [**Evaluation categories**](#evaluation-categories)
++3. [**Quick Start and**](#quick-start)
++4. [**Quick Start**](#quick-start)
++5. [**Quick Start**](#quick-start)
++6. [**Quick Start**](#quick-start)
+ 
+-1. Clone the repository to your computer.
+ 
+-2. To install the full requirements of the application, use the following command:
+-```python
+-pip install -r requirements.txt
+-```
+-3. Create `paths.py` inside `src/` directory. It should contain something like the following:
+-```python
+-main_path = '/<path_to_repo>/ImageQualityEvaluation_Bosch'
+-```  
++## Guides
+ 
+-### Usage
+-There are two main ways to use the system, one is by running a script of Python which analyzes all the images inside the data directory and produces a `.csv` file with the results of evaluating all the images in the 4 test. 
++* **Consulta también la carpeta `guides/` para la versión en formato `.pdf` de la guía del usuario, disponible en inglés y español.**
+ 
++* **Also see `guides/` for the `.pdf` version of the user guide, available in English and Spanish.**
+ 
+ ## Evaluation Categories
+ The image evaluation process is divided into four main categories:
+@@ -47,20 +42,43 @@ The way in which we asses the centering of an image respect to the reference is
+ Via this method we may determine if the new image is compliant with the tolerances, all comparing to the reference image.
+ 
+ ### 2. Focus
+-The focus evaluation checks the sharpness and clarity of the image. It helps determine whether the camera captured a clear and focused image or if blurriness or distortion is present.
++The focus evaluation checks the sharpness and clarity of the image. It helps determine whether the camera captured a clear and focused image or if blurriness or distortion is present. As requested by the specifications, the focus is evaluated in a region of the image in which the center reference square transitions to the white section of the picture. Note that the reference square has an angle in order to be able to analyze the quality of focus of the image at different parts of the image (or the lense itself). To learn more about the reason behind the reference shapes, visit the ISO page for the [ISO-12233:2023](https://www.iso.org/obp/ui/en/#iso:std:iso:12233:ed-4:v1:en) standard and older versions.
++
++The method in which we based our solution is the MTF50 stadard evaluation, as suggested by Bosch. See the following diagram as an explanation of the process:
++<p align="center">
++  <img src="./images/MTF50_explain.png" alt="MTF50 Explanation diagram" width="500">
++</p>
++The process for the analysis is given by the following steps:
++
++1. Read the Image and Convert to Grayscale Format.
++2. 'Project' the intensity of the pixels along one of the edges into a graph, which should look like a sigmoid function. This graph shows the change of intensity of the pixels as we go from the black, reference square section, to the white section.
++4. In order to get a representation of the rate of change of the pixel intensity from the balck to the white area, derive the function given by the projection.
++3. Via a Fast Fourier Transform, decompose the derivative projection.
++4. Plot the `MTF`-like decomposition of the rates of change. 
++
++<p align="center">
++  <img src="./images/MTF50.png" alt="MTF50 " width="600">
++</p>
++
++The graph expresses the spatial frequency, given in cycles per pixel, of the image for that given region. By checking the image when the MTF is at 0.50, it provides the cycles per pixel at a point where the contrast of the image is reduced by 50%.
+ 
+ ### 3. Lighting
+ The lighting test measures pixel intensity to assess image brightness, offering a reliable indicator. Test limits range from a minimum of 170 to a maximum of 250. This test evaluates if the lighting in a set of 20 images complies with these limits. Passing signifies meeting standards, while failing suggests deviation. Proper lighting is pivotal for clear and precise image analysis.
+ 
++<p align="center">
++  <img src="./images/light_comparison.png" alt="MTF50 " width="400">
++</p>
++
+ The way in which we asses the lighting of an image respect to the reference is by performing the following operations:
+ 
+ 1. Read the Image and Convert to Grayscale Format. 
+ 2. Apply Binary Thresholding.
+ 3. Find the Contours of the shape.
+-4. Draw Contours on the Original Image.
+-5. Collect Contour Data.
+-6. Calculate Mean RGB Color.
+-7. Evaluate Lighting regarding the calculation. 
++4. Extract the central portion of the object to reduce computational complexity.
++5. Draw Contours on the Original Image.
++6. Collect Contour Data.
++7. Calculate Mean RGB Color.
++8. Evaluate Lighting regarding the calculation. 
+ 
+ By employing this method, we can ascertain whether the new image complies with the established tolerances, all while comparing it to the reference image.
+ 
+@@ -76,19 +94,43 @@ Here are two examples of images being checked via this method:
+ 
+ **Valid orientation**
+ <p align="center">
+-  <img src="./images/REF_23_evaluateOrientation.PNG" alt="Centering comparison: Reference vs 12" width="400">
++  <img src="./images/REF_23_evaluateOrientation.PNG" alt="Valid orientation" width="400">
+ </p>
+ 
+-This image is considered to be valid, as when the top right red region is checked for averag black and white instensity of the channel, it lands below the given threshold. _Note that the threshold may be determined by heuristics
++This image is considered to be valid, as when the top right red region is checked for averag black and white instensity of the channel, it lands below the given threshold. _Note that the threshold may be determined by heuristics, but it may also be adapted for it to consider the center of the image as a basis to determine the threshold, since in case that the image is over or under exposed the threshold should change to acount for the variation._
+ 
+ **Invalid orientation**
+ <p align="center">
+-  <img src="./images/36._evaluateOrientation.PNG" alt="Centering comparison: Reference vs 12" width="400">
++  <img src="./images/36._evaluateOrientation.PNG" alt="Invalid orientation" width="400">
+ </p>
+ 
++In this second case the image is considered invalid, since the mean of pixel instensity in the specified region would be below the given threshold.
++
++## Quick start
++
++### Installation
++**Prerequisites:**
++Python3
++
++1. Clone the repository to your computer.
++
++2. To install the full requirements of the application, use the following command:
++```python
++pip install -r requirements.txt
++```
++3. Create `paths.py` inside `src/` directory. It should contain something like the following:
++```python
++main_path = '/<path_to_repo>/ImageQualityEvaluation_Bosch'
++```  
++
++## User Interface
++To make this project user friendly, a simple GUI application is provided for its usage and there is also the possiblity of executing the project via Windows Command Prompt / Linux terminal according to the needs of our users. Here it will be included some brief explanations on how to use each one of them. Furthermore, after running the project, a csv file which contains all the evaluation results is created. 
++
++### Project App
++<!>Include an <>
+ 
+ ### Contribute
+ We welcome contributions from the Bosch Hackathon community. If you have ideas for improving the image quality evaluation process or want to contribute code or documentation, please feel free to open an issue or submit a pull request.
+ 
+ ### License
+-This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms. 
+\ No newline at end of file
++This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms.      
+\ No newline at end of file
+    data/TEST.PNG - removed
+Blank File
+    data/TEST2.PNG - removed
+Blank File
+    images/MTF50.png - added
+Blank File
+    images/MTF50_explain.png - added
+Blank File
+    images/light_comparison.png - added
+Blank File
+    include/Include.md - removed
+@@ -1,11 +0,0 @@
+-# Include
+-
+-Inside this directory we provide modules for evaluating the 4 different aspects of the image, as requested.
+-
+-The implementations focus on evaluating:
+-* Centering
+-* Focus
+-* Lighting
+-* Orientation
+-
+-All evaluations return a boolean value, representing if the image passed the defined trial or test.
+\ No newline at end of file
+    include/centering.py - modified
+@@ -23,16 +23,17 @@ def cross_image(im1:np.ndarray, im2:np.ndarray):
+    # calculate the correlation image; note the flipping of onw of the images
+    return scipy.signal.fftconvolve(im1_gray, im2_gray[::-1,::-1], mode='same')
+ 
+-def evaluateCentering(refImageName :str = 'REF_23', testImageName :str = '12', tolerance:int=10) -> bool:
++def evaluateCentering(refImageName :str = 'REF_23.PNG', testImageName :str = '12.PNG', tolerance:int=10, path:str='../data/') -> bool:
+     '''
+     Evaluate if the test image is off-center from the reference image, by more than the tolerance permits it to be.
++    Receives a path to where the images are.
+     If the image is within bounds, returns true (else false). Default tolerance is +/- 10 pixels.
+     '''
+     
+     # Load reference and new image
+-    reference_path = f"../data/{refImageName}.PNG"
++    reference_path = f'{path}{testImageName}'
+     reference_image = Image.open(reference_path)
+-    new_path = f'../data/{testImageName}.PNG'
++    new_path = f'{path}{testImageName}'
+     new_image = Image.open(new_path)
+     
+     width, height = reference_image.size
+    include/focus.py - modified
+@@ -3,10 +3,9 @@
+ import numpy as np
+ 
+ 
+-def sharp(testFileNum) -> bool:
++def sharp(testFileName:str, path:str='../data/') -> bool:
+ 
+-    # Assume all data is inside /data/
+-    path = f'../data/{testFileNum}.PNG'
++    path = f'{path}{testFileName}'
+     image = cv2.imread(path)
+     # Exact crop 50x50 pixels where change between black and white is noticeable
+     crop_img = image[250:300, 370:420]
+@@ -82,12 +81,12 @@ def sharp(testFileNum) -> bool:
+     y_filtered = mtf[freq > 0]
+ 
+ 
+-    #plt.plot(x_filtered, y_filtered)
+-    #plt.xlabel('Spatial Frequency (cycles per pixel)')
+-    #plt.ylabel('MTF')
+-    #plt.title('Modulation Transfer Function (MTF)')
+-    #plt.grid(True)
+-    #plt.show()
++    # plt.plot(x_filtered, y_filtered)
++    # plt.xlabel('Spatial Frequency (cycles per pixel)')
++    # plt.ylabel('MTF')
++    # plt.title('Modulation Transfer Function (MTF)')
++    # plt.grid(True)
++    # plt.show()
+ 
+ 
+     # Find the frequency where MTF drops to 50% (0.5)
+    include/lighting.py - modified
+@@ -1,13 +1,14 @@
+ import cv2
+ 
+-def evaluateLighting(testFileNum) -> bool:
++def evaluateLighting(testFileNum:str, path:str='../data/') -> bool:
+     '''
+-    Receives a paramater 'image' of type Matlike, generated via the use of cv2.imread()
++    Receives a paramater 'image' of type Matlike, generated via the use of cv2.imread().
++    Receives a path to where the images are.
+     Returns if the image passed the evaluation as a boolean
+     '''
+     
+     # Assume all data is inside /data/
+-    path = f'../data/{testFileNum}.PNG'
++    path = f'{path}{testFileNum}'
+     image = cv2.imread(path)
+     
+     crop_img = image[100:350, 100:500]
+    include/orientation.py - modified
+@@ -14,14 +14,15 @@
+ from PIL import ImageStat
+ 
+ # Assume that all images are of size 640 * 480 pixels
+-def evaluateOrientation(fileNum:str, maxBrightness:int) -> bool:
++def evaluateOrientation(testFileNum:str, maxBrightness:int, path:str='../data/') -> bool:
+     '''
+     Checks whether the kernel has a mean lightness below a threshold and returns if it is below it.
++    Receives a path to where the images are.
+     Is below the value: true
+     Is NOT below the value: false
+     '''    
+     # Determine the relative path to the images
+-    path = f"../data/{fileNum}.PNG"
++    path = f'{path}{testFileNum}'
+     image = Image.open(path)
+ 
+     # Get the dimensions of the image
+    src/Src.md - removed
+Blank File
+    src/evaluateAll.py - modified
+@@ -3,7 +3,7 @@
+ '''
+ 
+ #from paths import main_path
+-import sys
++# import sys
+ #sys.path.append(main_path)
+ 
+ 
+@@ -12,30 +12,28 @@
+ from include.lighting import evaluateLighting
+ from include.focus import sharp
+ 
+-
+-def evaluateAll(testFileNum:str) -> list:
++# Remember to pass testFileNum with format '1.PNG', since the code does not add the extension by default
++def evaluateAll(testFileNum:str, referenceFile:str='REF_23.PNG', path:str='../data/') -> list:
+     '''
+     Evaluates the testFileNum image, comparing it to the reference image.
++    Receives a path to where the images are.
+     The tests are: centering offset to reference, lighting, orientation, and focus.
+     '''
+     
++    # Define the path where the data images are (provide a way )
++    
+     results = [False, False, False, False]
+-    referenceFile = 'REF_23'
+     
+     # offset to reference (centering) (tolerance +/- 10)
+-    results[0] = evaluateCentering(testFileNum, referenceFile, 10)
++    results[0] = evaluateCentering(testImageName=testFileNum, refImageName=referenceFile, path=path)
+     
+     # lighting
+-    results[1] = evaluateLighting(testFileNum)
++    results[1] = evaluateLighting(testFileNum=testFileNum, path=path)
+     
+     # orientation (50 seems to be a good number for most cases)
+-    results[2] = evaluateOrientation(testFileNum, 50)
++    results[2] = evaluateOrientation(testFileNum=testFileNum, maxBrightness=50, path=path)
+     
+     # focus (Sharpness of Image)
+-    results[3] = sharp(testFileNum)
+-
+-    return results
+-
+-
+-#print(evaluateAll("1"))
++    results[3] = sharp(testFileNum=testFileNum, path=path)
+ 
++    return results
+\ No newline at end of file
+    src/getData.py - modified
+@@ -3,7 +3,7 @@
+ from evaluateAll import evaluateAll
+ import pandas as pd
+ 
+-def getData() ->pd.DataFrame:
++def getData() -> pd.DataFrame:
+     # Array for storing the results of each image
+     centering = [] # Format -> [orientation, centering, brightness, focus]
+     lightning = []
+    src/imageEvaluation.py - added
+@@ -0,0 +1,51 @@
++'''
++This script provides a simple way to execute a full evaluation of all the images inside a folder, by specifying the folder during
++call in the terminal.
++
++The syntax looks like the following:
++python3 imageEvaluation.py <path_to_data_folder"
++
++By using this, the full evaluation may be run without modifying any of the scripts, and without having to change the images to evaluate 
++to the default ./data/ directory.
++
++Pass the absolute path to the folder in order to ensure good execution.
++The script writes a .csv
++'''
++
++import sys
++import os
++
++def evaluateExec(path:str='../data/', referenceImage:str='REF_23.PNG') -> None:
++    '''
++    Use the path provided during execution as the path of the images.
++    '''
++    pass
++
++def main():
++    # There are two options for the use
++    # Specify the path to the images (absolute path) or not
++    # Specify the name of the reference file
++    
++    if len(sys.argv) > 2:
++        path = sys.argv[1]
++        reference_file = sys.argv[2]
++        print(f"Received string: {path} and {reference_file}")
++        evaluateExec(path, reference_file)
++    
++    elif len(sys.argv) > 1:
++        arg = sys.argv[1]
++        
++        if os.path.exists(arg):
++            print(f"Received path: {arg}")
++            evaluateExec(path=arg)
++        else:
++            # Assume that the string was not a path and consider it as a file
++            print(f"Received file: {arg}")
++        
++    else:
++        # Normal execution using the default path to data
++        print("No string provided.")
++        evaluateExec()
++
++if __name__ == "__main__":
++    main()
+\ No newline at end of file
+    src/main.py - modified
+@@ -17,8 +17,7 @@ def main():
+ 
+         # Evaluation section
+         for index in fileIndex:
+-            path = f"{index}"
+-            results = evaluateAll(path)
++            results = evaluateAll(str(index))
+ 
+             # Append elements to results
+             centering.append(results[0])
+    test/evaluateAll.py - removed
+@@ -1,8 +0,0 @@
+-'''
+-Test the implementation of evaluateAll function.
+-'''
+-
+-def main() -> None:
+-    fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
+-                 21, 22, 24, 26, 27, 28, 29, 32, 36]
+-    
+\ No newline at end of file
+    test/evaluateAll_test.py - added
+@@ -0,0 +1,27 @@
++'''
++Test the implementation of evaluateAll function.
++'''
++
++from paths import main_path
++import sys
++sys.path.append(main_path)
++
++from src.evaluateAll import evaluateAll
++
++def main() -> None:
++    fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
++                 21, 22, 24, 26, 27, 28, 29, 32, 36]
++    
++    # Evaluate all the images
++    # Remember to pass the test image name, reference image name and path to the data (as needed)
++    
++    # We may skip the path and let it be the default '../data/
++    # Also skip passing the reference file name, use the default 'REF_23.PNG'
++    
++    for fileNum in fileIndex:
++        print(f"Checking image {fileNum}:\n")
++        evaluateAll(testFileNum=fileNum)
++        print("--------------------")
++        
++if __name__ == "__main__":
++    main()
+    test/focus_test.py - added
+@@ -0,0 +1,13 @@
++from paths import main_path
++import sys
++sys.path.append(main_path)
++
++
++from include.focus import sharp
++
++def main() -> None:
++    # Try out the sharp function by comparing image 20 and REF_23
++    sharp(20)
++    
++if __name__ == '__main__':
++    main()
+\ No newline at end of file
+------------------------------
+Polo280, 2023-11-09 : getData file for app
+    src/getData.py - added
+@@ -0,0 +1,32 @@
++# Custom paths
++
++from evaluateAll import evaluateAll
++import pandas as pd
++
++def getData() ->pd.DataFrame:
++    # Array for storing the results of each image
++    centering = [] # Format -> [orientation, centering, brightness, focus]
++    lightning = []
++    orientation = []
++    focus = []
++    
++    try:
++        fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
++                     21, 22, 24, 26, 27, 28, 29, 32, 36, "REF_23"]
++
++        # Evaluation section
++        for index in fileIndex:
++            path = f"{index}"
++            results = evaluateAll(path)
++
++            # Append elements to results
++            centering.append(results[0])
++            lightning.append(results[1])
++            orientation.append(results[2])
++            focus.append(results[3])
++
++        df = pd.DataFrame({'File_Index': fileIndex, 'Centering': centering, "Lightning": lightning, "Orientation": orientation, "Sharpness": focus})
++        return df
++    
++    except Exception as ex:
++        print(ex)
+------------------------------
+CodingMaster8, 2023-11-09 : Minor Upgrades To Main
+
+Fixed Bugs and Completed Main
+    include/centering.py - modified
+@@ -26,7 +26,7 @@ def cross_image(im1:np.ndarray, im2:np.ndarray):
+ def evaluateCentering(refImageName :str = 'REF_23', testImageName :str = '12', tolerance:int=10) -> bool:
+     '''
+     Evaluate if the test image is off-center from the reference image, by more than the tolerance permits it to be.
+-    If the image is within bounds, returns true (else false). Defualt tolerance is +/- 10 pixels.
++    If the image is within bounds, returns true (else false). Default tolerance is +/- 10 pixels.
+     '''
+     
+     # Load reference and new image
+@@ -57,15 +57,15 @@ def evaluateCentering(refImageName :str = 'REF_23', testImageName :str = '12', t
+     max_corr_x = max_corr_position[1]
+     
+     # Calculate the offsets from the center
+-    x_offset = max_corr_x - (width / 2)
+-    y_offset = max_corr_y - (height / 2)
++    x_offset = (max_corr_x - (width / 2)) * 2
++    y_offset = (max_corr_y - (height / 2)) * 2
+ 
+     # Uncomment to debug
+-    print("X Offset (in pixels):", x_offset)
+-    print("Y Offset (in pixels):", y_offset)
++    #print("X Offset (in pixels):", x_offset)
++    #print("Y Offset (in pixels):", y_offset)
+     
+     # Check if the offsets are inside the accepted margins
+-    if x_offset > tolerance or y_offset > tolerance:
++    if x_offset < tolerance and y_offset < tolerance:
+         return True
+     else:
+         return False
+\ No newline at end of file
+    include/focus.py - modified
+@@ -2,17 +2,19 @@
+ import matplotlib.pyplot as plt
+ import numpy as np
+ 
+-imagen = cv2.imread("../data/REF_23.PNG")
+ 
++def sharp(testFileNum) -> bool:
+ 
+-def sharp(image):
++    # Assume all data is inside /data/
++    path = f'../data/{testFileNum}.PNG'
++    image = cv2.imread(path)
+     # Exact crop 50x50 pixels where change between black and white is noticeable
+     crop_img = image[250:300, 370:420]
+ 
+     gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+ 
+-    cv2.imwrite('image.jpg', crop_img)
+-    cv2.imwrite("gray.jpg", gray)
++    #cv2.imwrite('image.jpg', crop_img)
++    #cv2.imwrite("gray.jpg", gray)
+ 
+     # Normalize 2500 pixels in image
+     # Get the height and width of the image
+@@ -53,10 +55,10 @@ def sharp(image):
+ 
+ 
+     # Plot the ESF and LSF
+-    fig, ax = plt.subplots()
+-    ax.plot(x_lsf, normalized_data)
+-    ax.plot(x_values, sorted_pixels)
+-    plt.show()
++    #fig, ax = plt.subplots()
++    #ax.plot(x_lsf, normalized_data)
++    #ax.plot(x_values, sorted_pixels)
++    #plt.show()
+ 
+     # Make the MTF-50
+ 
+@@ -80,26 +82,26 @@ def sharp(image):
+     y_filtered = mtf[freq > 0]
+ 
+ 
+-    plt.plot(x_filtered, y_filtered)
+-    plt.xlabel('Spatial Frequency (cycles per pixel)')
+-    plt.ylabel('MTF')
+-    plt.title('Modulation Transfer Function (MTF)')
+-    plt.grid(True)
+-    plt.show()
++    #plt.plot(x_filtered, y_filtered)
++    #plt.xlabel('Spatial Frequency (cycles per pixel)')
++    #plt.ylabel('MTF')
++    #plt.title('Modulation Transfer Function (MTF)')
++    #plt.grid(True)
++    #plt.show()
+ 
+ 
+     # Find the frequency where MTF drops to 50% (0.5)
+     mtf_threshold = 0.5  # MTF at 50%
+     cut_off_index = np.where(y_filtered <= mtf_threshold)[0][0]
+-    print(cut_off_index)
++    #print(cut_off_index)
+ 
+     # Calculate the cut-off frequency
+     cut_off_mtf = y_filtered[cut_off_index]
+     cut_off_frequency = x_filtered[cut_off_index]
+ 
+-    print(f"Cut-off MTF: {cut_off_mtf}")
++    #print(f"Cut-off MTF: {cut_off_mtf}")
+ 
+-    print(f"Cut-off Frequency: {cut_off_frequency}")
++    #print(f"Cut-off Frequency: {cut_off_frequency}")
+ 
+     #First index
+     # index 8 and value 0.44 for 20
+@@ -112,9 +114,9 @@ def sharp(image):
+     #index 12 for 19
+ 
+     if cut_off_index > 12:
+-        print("Image is Sharp")
++        #print("Image is Sharp")
++        return True
+     else:
+-        print("Image is not Sharp")
++        #print("Image is not Sharp")
++        return False
+ 
+-
+-#sharp(imagen)
+\ No newline at end of file
+    include/lighting.py - modified
+@@ -1,6 +1,6 @@
+ import cv2
+ 
+-def evaluateLighting(testFileNum:int) -> bool:
++def evaluateLighting(testFileNum) -> bool:
+     '''
+     Receives a paramater 'image' of type Matlike, generated via the use of cv2.imread()
+     Returns if the image passed the evaluation as a boolean
+@@ -48,12 +48,12 @@ def evaluateLighting(testFileNum:int) -> bool:
+     total_blue = 0
+     count = 0
+ 
+-    print("/////////////////")
++    #print("/////////////////")
+ 
+     for x in list_light:
+         element1 = x[0][0]  # First integer
+         element2 = x[0][1]  # Second integer
+-        print(f"First element: {element1}, Second element: {element2}")
++        #print(f"First element: {element1}, Second element: {element2}")
+ 
+         if element1 < 235:
+             element1 -= 5
+@@ -67,7 +67,7 @@ def evaluateLighting(testFileNum:int) -> bool:
+         pixel_color = crop_img[element2, element1]
+         blue, green, red = pixel_color
+ 
+-        print(f"RGB color of pixel ({element1}, {element2}): ({red}, {green}, {blue})")
++        #print(f"RGB color of pixel ({element1}, {element2}): ({red}, {green}, {blue})")
+ 
+         total_red += red
+         total_green += green
+@@ -82,11 +82,13 @@ def evaluateLighting(testFileNum:int) -> bool:
+ 
+     color_mean = (mean_red + mean_blue + mean_green) / 3
+ 
+-    print("/////")
+-    print(f"Mean RGB color of the specified range: ({mean_red}, {mean_green}, {mean_blue})")
+-    print(f"Mean Color : {color_mean}")
++    #print("/////")
++    #print(f"Mean RGB color of the specified range: ({mean_red}, {mean_green}, {mean_blue})")
++    #print(f"Mean Color : {color_mean}")
+ 
+     if 170 <= color_mean <= 230:
+-        print("Image with lightning within range")
++        #print("Image with lightning within range")
++        return True
+     else:
+-        print("Image lightning NOT in range")
+\ No newline at end of file
++        #print("Image lightning NOT in range")
++        return False
+    src/evaluateAll.py - modified
+@@ -2,15 +2,15 @@
+ A main function for the app to run on an image, testing it on the 4 categories.
+ '''
+ 
+-from paths import main_path
++#from paths import main_path
+ import sys
+-sys.path.append(main_path)
++#sys.path.append(main_path)
+ 
+-from PIL import Image
+ 
+ from include.centering import evaluateCentering
+ from include.orientation import evaluateOrientation
+ from include.lighting import evaluateLighting
++from include.focus import sharp
+ 
+ 
+ def evaluateAll(testFileNum:str) -> list:
+@@ -31,7 +31,11 @@ def evaluateAll(testFileNum:str) -> list:
+     # orientation (50 seems to be a good number for most cases)
+     results[2] = evaluateOrientation(testFileNum, 50)
+     
+-    # focus (missing, leave false for the moment)
+-    #results[3] = evaluateFocus(...)
+-    
+-    return results
+\ No newline at end of file
++    # focus (Sharpness of Image)
++    results[3] = sharp(testFileNum)
++
++    return results
++
++
++#print(evaluateAll("1"))
++
+    src/main.py - modified
+@@ -1,48 +1,35 @@
+ # Custom paths
+-import sys
+-sys.path.append('/home/david/Documents/Code/BoschHackathon/ImageQualityEvaluation_Bosch')
+-from include.orientation import evaluateTopRightCorner
+ 
+-from PIL import Image
+-import csv
+-
+-# Write to a CSV file the evaluation results
+-def writeToCsv(results):
+-    fields = ['Image', 'Orientation', 'Centering', 'Brightness', 'Focus']
+-    file = "../Results.csv"
+-    with open(file, 'w') as csvFile:
+-        writer = csv.writer(csvFile)
+-        writer.writerow(fields)
+-        writer.writerows(results)
++from evaluateAll import evaluateAll
++import pandas as pd
+ 
+ 
+ def main():
+     # Array for storing the results of each image
+-    results = [[]] # Format -> [orientation, centering, brightness, focus]
++    centering = [] # Format -> [orientation, centering, brightness, focus]
++    lightning = []
++    orientation = []
++    focus = []
+     
+     try:
+         fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
+-                     21, 22, 24, 26, 27, 28, 29, 32, 36]
+-        
+-        # Reference image
+-        path = "../data/REF_23.PNG"
+-        refImg = Image.open(path)
++                     21, 22, 24, 26, 27, 28, 29, 32, 36, "REF_23"]
+ 
+         # Evaluation section
+-        for index in range(len(fileIndex)):
+-            path = f"../data/{fileIndex[index]}.PNG"
+-            evImg = Image.open(path)
+-            oriented = evaluateTopRightCorner(evImg, 50)
++        for index in fileIndex:
++            path = f"{index}"
++            results = evaluateAll(path)
++
+             # Append elements to results
+-            results.append(list())
+-            results[index].append(f"{fileIndex[index]}.PNG")
+-            results[index].append(str(oriented))
+-        
+-        # Write results to a csv file
+-        writeToCsv()
++            centering.append(results[0])
++            lightning.append(results[1])
++            orientation.append(results[2])
++            focus.append(results[3])
++
++        df = pd.DataFrame({'File_Index': fileIndex, 'Centering': centering, "Lightning": lightning, "Orientation": orientation, "Sharpness": focus})
++        print(df)
+ 
+     except Exception as ex:
+         print(ex)
+ 
+-if __name__ == '__main__':
+-    main()
+\ No newline at end of file
++
+------------------------------
+David-OC17, 2023-11-09 : Modified README (added further documentation)
+    README.md - modified
+@@ -2,23 +2,68 @@
+ ## Introduction
+ This repository is dedicated to the evaluation of ADAS (Advanced Driver Assistance Systems) camera images for the Bosch Hackathon. The goal is to assess the quality of the images captured by ADAS cameras and ensure they meet the required standards. All images in this dataset are standardized to be 640 by 480 pixels.
+ 
++## Quick start
++
++### Installation
++**Prerequisites:**
++Python3
++
++1. Clone the repository to your computer.
++
++2. To install the full requirements of the application, use the following command:
++```python
++pip install -r requirements.txt
++```
++3. Create `paths.py` inside `src/` directory. It should contain something like the following:
++```python
++main_path = '/<path_to_repo>/ImageQualityEvaluation_Bosch'
++```  
++
++### Usage
++There are two main ways to use the system, one is by running a script of Python which analyzes all the images inside the data directory and produces a `.csv` file with the results of evaluating all the images in the 4 test. 
++
++
+ ## Evaluation Categories
+ The image evaluation process is divided into four main categories:
+ 
+-<<<<<<< Updated upstream
+ ### 1. Centering
+ This category assesses whether the subject of the image is properly centered. An image is considered centered when the main subject or region of interest is well-aligned within the frame.
+-=======
+-## Quick start and installation
+ 
+->>>>>>> Stashed changes
++The following figure shows two overlaping images; the reference on the back and with the black features painted in blue, and the testing image `12.PNG` in the front with the black sections painted in red.
++<p align="center">
++  <img src="./images/comparison23-12_centering.png" alt="Centering comparison: Reference vs 12" width="500">
++</p>
++The figure shows how a part of the images' reference figures overlap, and also helps to distinguish how the offset from the reference presents itself in some images.
++
++The way in which we asses the centering of an image respect to the reference is by performing the following operations:
++
++1. Load the reference and comparison images
++2. Convert the images to Numpy arrays
++3. Calculate cross-correlation betweent the two images
++4. Find the location of the maximum correlation peak
++5. Calculate offsets from the center
++6. Check if the offset is inside the desired limits
++
++Via this method we may determine if the new image is compliant with the tolerances, all comparing to the reference image.
+ 
+ ### 2. Focus
+ The focus evaluation checks the sharpness and clarity of the image. It helps determine whether the camera captured a clear and focused image or if blurriness or distortion is present.
+ 
+-<<<<<<< Updated upstream
+ ### 3. Lighting
+-Lighting is a critical factor in image quality. This category evaluates the brightness and illumination of the image to ensure it meets the desired standards. Proper lighting is essential for clear and accurate analysis.
++The lighting test measures pixel intensity to assess image brightness, offering a reliable indicator. Test limits range from a minimum of 170 to a maximum of 250. This test evaluates if the lighting in a set of 20 images complies with these limits. Passing signifies meeting standards, while failing suggests deviation. Proper lighting is pivotal for clear and precise image analysis.
++
++The way in which we asses the lighting of an image respect to the reference is by performing the following operations:
++
++1. Read the Image and Convert to Grayscale Format. 
++2. Apply Binary Thresholding.
++3. Find the Contours of the shape.
++4. Draw Contours on the Original Image.
++5. Collect Contour Data.
++6. Calculate Mean RGB Color.
++7. Evaluate Lighting regarding the calculation. 
++
++By employing this method, we can ascertain whether the new image complies with the established tolerances, all while comparing it to the reference image.
++
+ 
+ ### 4. Orientation
+ Orientation is crucial for image interpretation. Images must be in the correct orientation to facilitate accurate analysis. To be considered correctly oriented, an image must adhere to the following guidelines:
+@@ -27,41 +72,23 @@ One of the black reference squares should be positioned at the center of the ima
+ The other black reference square should be at the top right corner of the image.
+ If the top right corner square is not in its designated position, the image is considered to have an incorrect orientation. Tests for correct orientation involve defining a "window" where the top right black reference square should be if oriented correctly. The system then checks if the average brightness of this region is as low as it should be for the square to be considered the reference square.
+ 
+-### Usage
+-For evaluating images, refer to the specific scripts or tools provided in this repository. Detailed instructions and guidelines for each evaluation category can be found within their respective directories or files.
+-
+-### Contribute
+-We welcome contributions from the Bosch Hackathon community. If you have ideas for improving the image quality evaluation process or want to contribute code or documentation, please feel free to open an issue or submit a pull request.
+-
+-### License
+-This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms.
+-=======
+-Centering refers to the positioning of an image within its frame or field of view. It's a critical aspect of image quality evaluation as defined by ISO standards. Proper centering ensures that the subject of the image is correctly aligned and doesn't appear off-center. This involves evaluating how well an image's main subject or object is positioned relative to the center of the frame.
+-
+-To evaluate centering according to ISO standards, the image can be compared to a reference image or template. Various image processing techniques can be applied to assess how closely the subject of interest aligns with the center point. This assessment is crucial for applications like photography, computer vision, and quality control in fields such as manufacturing.
+-
+-To correct centering issues, adjustments may be made by shifting or cropping the image to reposition the subject accurately within the frame.
++Here are two examples of images being checked via this method:
+ 
++**Valid orientation**
+ <p align="center">
+-  <img src="./images/comparison23-12_centering.png" alt="Centering comparison: Reference vs 12" width="600">
++  <img src="./images/REF_23_evaluateOrientation.PNG" alt="Centering comparison: Reference vs 12" width="400">
+ </p>
+ 
+-## Focus
+-
+-Focus in image quality evaluation pertains to the sharpness and clarity of an image. It is a key aspect assessed using standards such as ISO 12233. Focus evaluation involves determining how well-defined the subject or object in an image appears. A focused image should exhibit crisp and clear details, while an out-of-focus image may appear blurry or lack sharpness.
+-
+-To evaluate focus, ISO 12233 provides a standardized test pattern that can be used to measure the sharpness of an image. This involves analyzing how well-defined certain elements in the image are, often using metrics like the Modulation Transfer Function (MTF).
++This image is considered to be valid, as when the top right red region is checked for averag black and white instensity of the channel, it lands below the given threshold. _Note that the threshold may be determined by heuristics
+ 
+-For correction, if an image is found to be out of focus, techniques such as image sharpening may be employed to enhance the clarity of the subject.
+-
+-## Lighting
+-
+-Lighting, also known as brightness, plays a significant role in image quality assessment. Proper lighting ensures that an image is adequately illuminated, allowing for clear and accurate visibility of the subject. ISO standards address the evaluation of brightness, ensuring that images are neither underexposed (too dark) nor overexposed (too bright).
+-
+-To evaluate lighting, ISO standards may specify methods for measuring the luminance or intensity of light in an image. This involves assessing whether the image's brightness falls within the acceptable range.
++**Invalid orientation**
++<p align="center">
++  <img src="./images/36._evaluateOrientation.PNG" alt="Centering comparison: Reference vs 12" width="400">
++</p>
+ 
+-For correction, adjustments to the exposure settings during image capture or post-processing techniques can be applied to achieve the desired level of lighting. Balancing lighting is crucial for applications ranging from photography to medical imaging.
+ 
+-These aspects—centering, focus, and lighting—constitute key components of image quality evaluation, ensuring that images are visually clear, properly aligned, and appropriately illuminated for their intended purpose. Adhering to ISO standards for these parameters can lead to improved image quality in various fields.
+->>>>>>> Stashed changes
++### Contribute
++We welcome contributions from the Bosch Hackathon community. If you have ideas for improving the image quality evaluation process or want to contribute code or documentation, please feel free to open an issue or submit a pull request.
+ 
++### License
++This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms. 
+\ No newline at end of file
+    app/main.py - added
+Blank File
+    images/36._evaluateOrientation.PNG - added
+Blank File
+    images/REF_23_evaluateOrientation.PNG - added
+Blank File
+    images/comparison23-12_centering.png - added
+Blank File
+    images/comparison23-12_centering.xcf - removed
+Blank File
+    requirements.txt - modified
+@@ -1,3 +1,4 @@
+ opencv-python == 4.8.1
+ Pillow == 9.0.1
+-scipy == 1.11.3
+\ No newline at end of file
++scipy == 1.11.3
++matplotlib == 3.8.0
+\ No newline at end of file
+------------------------------
+CodingMaster8, 2023-11-09 : Include Focus Function
+
+This function measures the sharpness of an image
+    include/focus.py - modified
+@@ -0,0 +1,120 @@
++import cv2
++import matplotlib.pyplot as plt
++import numpy as np
++
++imagen = cv2.imread("../data/REF_23.PNG")
++
++
++def sharp(image):
++    # Exact crop 50x50 pixels where change between black and white is noticeable
++    crop_img = image[250:300, 370:420]
++
++    gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
++
++    cv2.imwrite('image.jpg', crop_img)
++    cv2.imwrite("gray.jpg", gray)
++
++    # Normalize 2500 pixels in image
++    # Get the height and width of the image
++    height, width = gray.shape
++
++    norm_pixels = []
++    pixels = []
++
++    # Iterate through the grayscale image and print the pixel values
++    for y in range(height):
++        for x in range(width):
++            pixel_value = gray[y, x]
++            #print(f"Pixel at ({x}, {y}): {pixel_value/255}")
++            norm_pixels.append(pixel_value/255)
++            pixels.append(pixel_value)
++
++
++    # Plot the ESF
++    x_values = range(1, len(norm_pixels) + 1)
++    sorted_pixels = sorted(norm_pixels)
++
++
++    # Diff the ESF to get LSF
++    esf_array = np.array(sorted_pixels)
++
++    # Calculate the LSF by taking central differences
++    lsf = np.diff(esf_array)
++
++    # Create an array of x values corresponding to the LSF
++    x_lsf = np.arange(1, len(lsf) + 1)
++
++    # Normalize data with min-max
++    min_vals = lsf.min(axis=0)
++    max_vals = lsf.max(axis=0)
++
++    # Perform Min-Max scaling
++    normalized_data = (lsf - min_vals) / (max_vals - min_vals)
++
++
++    # Plot the ESF and LSF
++    fig, ax = plt.subplots()
++    ax.plot(x_lsf, normalized_data)
++    ax.plot(x_values, sorted_pixels)
++    plt.show()
++
++    # Make the MTF-50
++
++    # Perform the discrete Fourier transform (DFT)
++    fft_lsf = np.fft.fft(lsf)
++
++    # Calculate the absolute value of the Fourier transform
++    abs_fft_lsf = np.abs(fft_lsf)
++
++    # Normalize the MTF to values between 0 and 1
++    mtf = abs_fft_lsf / abs_fft_lsf[0]
++
++    # Calculate the corresponding frequency values
++    sampling_rate = 2  # Frequency
++    n = len(lsf)
++    freq = np.fft.fftfreq(n, d=1.0 / sampling_rate)
++
++
++    # Filter the data to include only points where x > 0
++    x_filtered = freq[freq > 0]
++    y_filtered = mtf[freq > 0]
++
++
++    plt.plot(x_filtered, y_filtered)
++    plt.xlabel('Spatial Frequency (cycles per pixel)')
++    plt.ylabel('MTF')
++    plt.title('Modulation Transfer Function (MTF)')
++    plt.grid(True)
++    plt.show()
++
++
++    # Find the frequency where MTF drops to 50% (0.5)
++    mtf_threshold = 0.5  # MTF at 50%
++    cut_off_index = np.where(y_filtered <= mtf_threshold)[0][0]
++    print(cut_off_index)
++
++    # Calculate the cut-off frequency
++    cut_off_mtf = y_filtered[cut_off_index]
++    cut_off_frequency = x_filtered[cut_off_index]
++
++    print(f"Cut-off MTF: {cut_off_mtf}")
++
++    print(f"Cut-off Frequency: {cut_off_frequency}")
++
++    #First index
++    # index 8 and value 0.44 for 20
++    #index 14 and value 0.49 for REF
++    #index 12 and value 0.45 for 22
++    #index 15 and value 0.49 for 36
++    #index 18 for 32
++    #index 9 for 21
++    #index 17 for 26
++    #index 12 for 19
++
++    if cut_off_index > 12:
++        print("Image is Sharp")
++    else:
++        print("Image is not Sharp")
++
++
++#sharp(imagen)
+\ No newline at end of file
+------------------------------
+David-OC17, 2023-11-09 : Merge changes for README
+    README.md - modified
+@@ -5,12 +5,18 @@ This repository is dedicated to the evaluation of ADAS (Advanced Driver Assistan
+ ## Evaluation Categories
+ The image evaluation process is divided into four main categories:
+ 
++<<<<<<< Updated upstream
+ ### 1. Centering
+ This category assesses whether the subject of the image is properly centered. An image is considered centered when the main subject or region of interest is well-aligned within the frame.
++=======
++## Quick start and installation
++
++>>>>>>> Stashed changes
+ 
+ ### 2. Focus
+ The focus evaluation checks the sharpness and clarity of the image. It helps determine whether the camera captured a clear and focused image or if blurriness or distortion is present.
+ 
++<<<<<<< Updated upstream
+ ### 3. Lighting
+ Lighting is a critical factor in image quality. This category evaluates the brightness and illumination of the image to ensure it meets the desired standards. Proper lighting is essential for clear and accurate analysis.
+ 
+@@ -29,4 +35,33 @@ We welcome contributions from the Bosch Hackathon community. If you have ideas f
+ 
+ ### License
+ This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms.
++=======
++Centering refers to the positioning of an image within its frame or field of view. It's a critical aspect of image quality evaluation as defined by ISO standards. Proper centering ensures that the subject of the image is correctly aligned and doesn't appear off-center. This involves evaluating how well an image's main subject or object is positioned relative to the center of the frame.
++
++To evaluate centering according to ISO standards, the image can be compared to a reference image or template. Various image processing techniques can be applied to assess how closely the subject of interest aligns with the center point. This assessment is crucial for applications like photography, computer vision, and quality control in fields such as manufacturing.
++
++To correct centering issues, adjustments may be made by shifting or cropping the image to reposition the subject accurately within the frame.
++
++<p align="center">
++  <img src="./images/comparison23-12_centering.png" alt="Centering comparison: Reference vs 12" width="600">
++</p>
++
++## Focus
++
++Focus in image quality evaluation pertains to the sharpness and clarity of an image. It is a key aspect assessed using standards such as ISO 12233. Focus evaluation involves determining how well-defined the subject or object in an image appears. A focused image should exhibit crisp and clear details, while an out-of-focus image may appear blurry or lack sharpness.
++
++To evaluate focus, ISO 12233 provides a standardized test pattern that can be used to measure the sharpness of an image. This involves analyzing how well-defined certain elements in the image are, often using metrics like the Modulation Transfer Function (MTF).
++
++For correction, if an image is found to be out of focus, techniques such as image sharpening may be employed to enhance the clarity of the subject.
++
++## Lighting
++
++Lighting, also known as brightness, plays a significant role in image quality assessment. Proper lighting ensures that an image is adequately illuminated, allowing for clear and accurate visibility of the subject. ISO standards address the evaluation of brightness, ensuring that images are neither underexposed (too dark) nor overexposed (too bright).
++
++To evaluate lighting, ISO standards may specify methods for measuring the luminance or intensity of light in an image. This involves assessing whether the image's brightness falls within the acceptable range.
++
++For correction, adjustments to the exposure settings during image capture or post-processing techniques can be applied to achieve the desired level of lighting. Balancing lighting is crucial for applications ranging from photography to medical imaging.
++
++These aspects—centering, focus, and lighting—constitute key components of image quality evaluation, ensuring that images are visually clear, properly aligned, and appropriately illuminated for their intended purpose. Adhering to ISO standards for these parameters can lead to improved image quality in various fields.
++>>>>>>> Stashed changes
+ 
+------------------------------
+José María Soto valenzuela, 2023-11-09 : Update README.md
+
+readme_update
+    README.md - modified
+@@ -1,15 +1,32 @@
+-# ImageQualityEvaluation_Bosch
+-Evaluation of ADAS camera images for Bosch Hackathon.
++# Bosch Hackathon - ADAS Camera Image Quality Evaluation
++## Introduction
++This repository is dedicated to the evaluation of ADAS (Advanced Driver Assistance Systems) camera images for the Bosch Hackathon. The goal is to assess the quality of the images captured by ADAS cameras and ensure they meet the required standards. All images in this dataset are standardized to be 640 by 480 pixels.
+ 
+-The size of all the images is 640 by 480 pixels.
++## Evaluation Categories
++The image evaluation process is divided into four main categories:
+ 
++### 1. Centering
++This category assesses whether the subject of the image is properly centered. An image is considered centered when the main subject or region of interest is well-aligned within the frame.
+ 
+-## Centering
++### 2. Focus
++The focus evaluation checks the sharpness and clarity of the image. It helps determine whether the camera captured a clear and focused image or if blurriness or distortion is present.
+ 
+-## Focus
++### 3. Lighting
++Lighting is a critical factor in image quality. This category evaluates the brightness and illumination of the image to ensure it meets the desired standards. Proper lighting is essential for clear and accurate analysis.
+ 
+-## Lighting 
++### 4. Orientation
++Orientation is crucial for image interpretation. Images must be in the correct orientation to facilitate accurate analysis. To be considered correctly oriented, an image must adhere to the following guidelines:
++
++One of the black reference squares should be positioned at the center of the image.
++The other black reference square should be at the top right corner of the image.
++If the top right corner square is not in its designated position, the image is considered to have an incorrect orientation. Tests for correct orientation involve defining a "window" where the top right black reference square should be if oriented correctly. The system then checks if the average brightness of this region is as low as it should be for the square to be considered the reference square.
++
++### Usage
++For evaluating images, refer to the specific scripts or tools provided in this repository. Detailed instructions and guidelines for each evaluation category can be found within their respective directories or files.
++
++### Contribute
++We welcome contributions from the Bosch Hackathon community. If you have ideas for improving the image quality evaluation process or want to contribute code or documentation, please feel free to open an issue or submit a pull request.
++
++### License
++This project is licensed under the MIT License, which means you are free to use and modify the code as long as you comply with the license terms.
+ 
+-## Orientation
+-To be considered with the right orientation, the image must have one of the black reference squared at the center, and the other one at the top right corner. 
+-If the corner square is out of place, then the image has incorrect orientation. The tests consists of defining a _window_ where the top right black reference square should be if oriented correctly, and checking if the average brightness of the region is as low is would need to be for the square to be the reference square.
+\ No newline at end of file
+------------------------------
+David-OC17, 2023-11-09 : Started evaluate all, modified evaluation modules and testing, and other minor changes
+    .gitignore - modified
+@@ -1,5 +1,7 @@
+ # Ignore paths for absolute module imports
+ /test/paths.py
++/src/paths.py
++/test/playground.py
+ 
+ # Byte-compiled / optimized / DLL files
+ __pycache__/
+    images/comparison23-12_centering.xcf - added
+Blank File
+    include/centering.py - modified
+@@ -0,0 +1,71 @@
++'''
++These functions aim to facilitate a way to evaluate centering of an image in comparison to a reference. 
++The comparison is done by detecting shapes, or interest points, and comparing the discrepacy of centering, which may
++also be though as a transformation of the image, by calculating a homography matrix.
++'''
++
++import numpy as np
++from PIL import Image
++import scipy.signal
++
++
++# Provide the images as a matrix
++def cross_image(im1:np.ndarray, im2:np.ndarray):
++   # get rid of the color channels by performing a grayscale transform
++   # the type cast into 'float' is to avoid overflows
++   im1_gray = np.sum(im1.astype('float'), axis=2)
++   im2_gray = np.sum(im2.astype('float'), axis=2)
++
++   # get rid of the averages, otherwise the results are not good
++   im1_gray -= np.mean(im1_gray)
++   im2_gray -= np.mean(im2_gray)
++
++   # calculate the correlation image; note the flipping of onw of the images
++   return scipy.signal.fftconvolve(im1_gray, im2_gray[::-1,::-1], mode='same')
++
++def evaluateCentering(refImageName :str = 'REF_23', testImageName :str = '12', tolerance:int=10) -> bool:
++    '''
++    Evaluate if the test image is off-center from the reference image, by more than the tolerance permits it to be.
++    If the image is within bounds, returns true (else false). Defualt tolerance is +/- 10 pixels.
++    '''
++    
++    # Load reference and new image
++    reference_path = f"../data/{refImageName}.PNG"
++    reference_image = Image.open(reference_path)
++    new_path = f'../data/{testImageName}.PNG'
++    new_image = Image.open(new_path)
++    
++    width, height = reference_image.size
++    
++    # Cut the images to avoid unnecessary work on the image, as well as providing less points in which the images may coincide
++    # Cut them to a rectangle of the same relation height-width, in the center, and of 
++
++    # Convert the image to a NumPy array
++    reference_np = np.array(reference_image)
++    new_np = np.array(new_image)
++
++    # Calculate the cross-correlation between the two images (pass them as numpy arrays)
++    correlation_result = cross_image(reference_np, new_np)
++
++    # Perform further processing or analysis on the correlation_result
++    # For example, finding the location of the maximum correlation peak
++    max_corr_position = np.unravel_index(np.argmax(correlation_result), correlation_result.shape)
++    
++    #print("Max correlation position:", max_corr_position)
++    
++    max_corr_y = max_corr_position[0]
++    max_corr_x = max_corr_position[1]
++    
++    # Calculate the offsets from the center
++    x_offset = max_corr_x - (width / 2)
++    y_offset = max_corr_y - (height / 2)
++
++    # Uncomment to debug
++    print("X Offset (in pixels):", x_offset)
++    print("Y Offset (in pixels):", y_offset)
++    
++    # Check if the offsets are inside the accepted margins
++    if x_offset > tolerance or y_offset > tolerance:
++        return True
++    else:
++        return False
+\ No newline at end of file
+    include/iluminacion.py - removed
+@@ -1,101 +0,0 @@
+-import cv2
+-
+-#1.Read the Image and convert it to Grayscale Format
+-
+-imagen = cv2.imread("../data/24.PNG")
+-
+-#Parametro de entrada debe ser una imagen leida con cv2.image()
+-
+-def iluminacion(image):
+-
+-    crop_img = image[100:350, 100:500]
+-    #cv2.imwrite('new_img.jpg', crop_img)
+-
+-    # convert the image to grayscale format
+-    img_gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+-
+-    #2. Apply Binary Thresholding
+-
+-    # apply binary thresholding
+-    ret, thresh = cv2.threshold(img_gray, 100, 255, cv2.THRESH_BINARY)
+-
+-    # visualize the binary image
+-
+-    #cv2.imwrite('image_thres1.jpg', thresh)
+-
+-
+-
+-    #3. Find the Contours
+-
+-    # detect the contours on the binary image using cv2.CHAIN_APPROX_NONE
+-    contours, hierarchy = cv2.findContours(image=thresh, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_SIMPLE)
+-
+-
+-    #4.  draw contours on the original image
+-    image_copy = crop_img.copy()
+-    cv2.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=1,
+-                     lineType=cv2.LINE_AA)
+-
+-    # see the result
+-    #cv2.imwrite('contours_none_image1.jpg', image_copy)
+-
+-    list_light = []
+-
+-    for x, y in enumerate(contours[1]):
+-        list_light.append(y)
+-
+-
+-    # Initialize variables to store the sum of RGB values
+-    total_red = 0
+-    total_green = 0
+-    total_blue = 0
+-    count = 0
+-
+-    print("/////////////////")
+-
+-    for x in list_light:
+-        element1 = x[0][0]  # First integer
+-        element2 = x[0][1]  # Second integer
+-        print(f"First element: {element1}, Second element: {element2}")
+-
+-        if element1 < 235:
+-            element1 -= 5
+-        elif element1 > 235:
+-            element1 += 5
+-        if element2 < 100:
+-            element2 -= 5
+-        elif element2 > 100:
+-            element2 += 5
+-
+-        pixel_color = crop_img[element2, element1]
+-        blue, green, red = pixel_color
+-
+-        print(f"RGB color of pixel ({element1}, {element2}): ({red}, {green}, {blue})")
+-
+-        total_red += red
+-        total_green += green
+-        total_blue += blue
+-        count += 1
+-
+-
+-    # Calculate the mean RGB color
+-    mean_red = total_red // count
+-    mean_green = total_green // count
+-    mean_blue = total_blue // count
+-
+-    color_mean = (mean_red + mean_blue + mean_green) / 3
+-
+-    print("/////")
+-    print(f"Mean RGB color of the specified range: ({mean_red}, {mean_green}, {mean_blue})")
+-    print(f"Mean Color : {color_mean}")
+-
+-    if 170 <= color_mean <= 230:
+-        print("Image with lightning within range")
+-    else:
+-        print("Image lightning not in range")
+-
+-
+-iluminacion(imagen)
+-
+-
+-
+    include/lighting.py - modified
+@@ -1,114 +1,92 @@
+ import cv2
+-import numpy as np
+-from PIL import Image
+ 
+-def find_white_shapes(image_path, output_path):
+-    # Open the image
+-    image = Image.open(image_path)
++def evaluateLighting(testFileNum:int) -> bool:
++    '''
++    Receives a paramater 'image' of type Matlike, generated via the use of cv2.imread()
++    Returns if the image passed the evaluation as a boolean
++    '''
++    
++    # Assume all data is inside /data/
++    path = f'../data/{testFileNum}.PNG'
++    image = cv2.imread(path)
++    
++    crop_img = image[100:350, 100:500]
+ 
+-    # Convert the image to grayscale
+-    image_gray = image.convert('L')
++    #1.Read the Image and convert it to Grayscale Format
++    
++    # convert the image to grayscale format
++    img_gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
+ 
+-    # Convert the grayscale image to a NumPy array
+-    image_array = np.array(image_gray)
++    #2. Apply Binary Thresholding
+ 
+-    # Calculate the center coordinates
+-    center_x, center_y = image_array.shape[1] // 2, image_array.shape[0] // 2
++    # apply binary thresholding
++    ret, thresh = cv2.threshold(img_gray, 100, 255, cv2.THRESH_BINARY)
+ 
+-    # Define the width and height of the area you want to crop
+-    crop_width = 200  # Adjust this value as needed
+-    crop_height = 200  # Adjust this value as needed
++    #3. Find the Contours
+ 
+-    # Calculate the coordinates for cropping
+-    x1 = center_x - crop_width // 2
+-    x2 = center_x + crop_width // 2
+-    y1 = center_y - crop_height // 2
+-    y2 = center_y + crop_height // 2
++    # detect the contours on the binary image using cv2.CHAIN_APPROX_NONE
++    contours, hierarchy = cv2.findContours(image=thresh, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_SIMPLE)
+ 
+-    # Crop the image to the desired region
+-    cropped_image_array = image_array[y1:y2, x1:x2]
+ 
+-    # Apply Canny edge detection to the cropped image
+-    edges = cv2.Canny(cropped_image_array, 250, 200)
++    #4.  draw contours on the original image
++    image_copy = crop_img.copy()
++    cv2.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=1,
++                     lineType=cv2.LINE_AA)
+ 
+-    # Find contours in the binary image
+-    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
++    # see the result
++    #cv2.imwrite('contours_none_image1.jpg', image_copy)
+ 
+-    # Create a three-channel image with white lines
+-    white_lines = np.zeros((crop_height, crop_width, 3), dtype=np.uint8)
+-    white_lines[edges != 0] = (255, 255, 255)  # White color in BGR format
++    list_light = []
+ 
+-    # Draw the contours on the white_lines image
+-    cv2.drawContours(white_lines, contours, -1, (255, 0, 0), 2)
++    for x, y in enumerate(contours[1]):
++        list_light.append(y)
+ 
+-    # Save the image with white contours
+-    Image.fromarray(white_lines).save(output_path)
+ 
+-    # Adjust contour coordinates for the cropping
+-    for contour in contours:
+-        for point in contour:
+-            x, y = point[0]
+-            # Adjust the coordinates to account for the cropping
+-            x += x1
+-            y += y1
+-            print(f"Contour Coordinate: x={x}, y={y}")
++    # Initialize variables to store the sum of RGB values
++    total_red = 0
++    total_green = 0
++    total_blue = 0
++    count = 0
+ 
+-    return contours
++    print("/////////////////")
+ 
+-# Specify the path to the input image file
+-input_image_path = "REF_23.PNG"
++    for x in list_light:
++        element1 = x[0][0]  # First integer
++        element2 = x[0][1]  # Second integer
++        print(f"First element: {element1}, Second element: {element2}")
+ 
+-# Specify the path to the output image with white contours
+-output_image_path = "White_Contours_new.png"
++        if element1 < 235:
++            element1 -= 5
++        elif element1 > 235:
++            element1 += 5
++        if element2 < 100:
++            element2 -= 5
++        elif element2 > 100:
++            element2 += 5
+ 
+-# Perform edge detection and find white shapes (contours)
+-contours = find_white_shapes(input_image_path, output_image_path)
++        pixel_color = crop_img[element2, element1]
++        blue, green, red = pixel_color
+ 
+-def measure_image_intensity(image_path):
+-    # Open the image
+-    image = Image.open(image_path)
++        print(f"RGB color of pixel ({element1}, {element2}): ({red}, {green}, {blue})")
+ 
+-    # Convert the image to grayscale
+-    image_gray = image.convert('L')
++        total_red += red
++        total_green += green
++        total_blue += blue
++        count += 1
+ 
+-    # Convert the grayscale image to a NumPy array
+-    image_array = np.array(image_gray)
+ 
+-    # Find contours in the binary image
+-    edges = cv2.Canny(image_array, 250, 200)
+-    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
++    # Calculate the mean RGB color
++    mean_red = total_red // count
++    mean_green = total_green // count
++    mean_blue = total_blue // count
+ 
+-    # Find the minimum and maximum X and Y coordinates among all contours
+-    min_x = min(contour[:, 0, 0].min() for contour in contours)
+-    max_x = max(contour[:, 0, 0].max() for contour in contours)
+-    min_y = min(contour[:, 0, 1].min() for contour in contours)
+-    max_y = max(contour[:, 0, 1].max() for contour in contours)
++    color_mean = (mean_red + mean_blue + mean_green) / 3
+ 
+-    # Define the region for intensity measurement, moving 5 pixels away from the edge
+-    center_x = (min_x + max_x) // 2
+-    center_y = (min_y + max_y) // 2
+-    region_width = 200  # Adjust this value as needed
+-    region_height = 200  # Adjust this value as needed
+-
+-    x1 = max(center_x - region_width // 2, min_x + 5)
+-    x2 = min(center_x + region_width // 2, max_x - 5)
+-    y1 = max(center_y - region_height // 2, min_y + 5)
+-    y2 = min(center_y + region_height // 2, max_y - 5)
+-
+-    # Crop the image to the defined region
+-    cropped_image_array = image_array[y1:y2, x1:x2]
+-
+-    # Calculate the average intensity in the cropped region
+-    average_intensity = np.mean(cropped_image_array)
+-
+-    return average_intensity
+-
+-# Specify the path to the input image file
+-input_image_path = "REF_23.PNG"
+-
+-# Perform intensity measurement
+-average_intensity = measure_image_intensity(input_image_path)
+-
+-# Output the result
+-print(f"Average Intensity: {average_intensity}")
++    print("/////")
++    print(f"Mean RGB color of the specified range: ({mean_red}, {mean_green}, {mean_blue})")
++    print(f"Mean Color : {color_mean}")
+ 
++    if 170 <= color_mean <= 230:
++        print("Image with lightning within range")
++    else:
++        print("Image lightning NOT in range")
+\ No newline at end of file
+    include/orientation.py - modified
+@@ -14,14 +14,15 @@
+ from PIL import ImageStat
+ 
+ # Assume that all images are of size 640 * 480 pixels
+-def evaluateTopRightCorner(image:Image, maxBrightness:int ) -> bool:
++def evaluateOrientation(fileNum:str, maxBrightness:int) -> bool:
+     '''
+     Checks whether the kernel has a mean lightness below a threshold and returns if it is below it.
+     Is below the value: true
+     Is NOT below the value: false
+     '''    
+     # Determine the relative path to the images
+-    # path = f"../data/{filename}"
++    path = f"../data/{fileNum}.PNG"
++    image = Image.open(path)
+ 
+     # Get the dimensions of the image
+     width, height = image.size
+    requirements.txt - modified
+@@ -0,0 +1,3 @@
++opencv-python == 4.8.1
++Pillow == 9.0.1
++scipy == 1.11.3
+\ No newline at end of file
+    src/evaluateAll.py - added
+@@ -0,0 +1,37 @@
++'''
++A main function for the app to run on an image, testing it on the 4 categories.
++'''
++
++from paths import main_path
++import sys
++sys.path.append(main_path)
++
++from PIL import Image
++
++from include.centering import evaluateCentering
++from include.orientation import evaluateOrientation
++from include.lighting import evaluateLighting
++
++
++def evaluateAll(testFileNum:str) -> list:
++    '''
++    Evaluates the testFileNum image, comparing it to the reference image.
++    The tests are: centering offset to reference, lighting, orientation, and focus.
++    '''
++    
++    results = [False, False, False, False]
++    referenceFile = 'REF_23'
++    
++    # offset to reference (centering) (tolerance +/- 10)
++    results[0] = evaluateCentering(testFileNum, referenceFile, 10)
++    
++    # lighting
++    results[1] = evaluateLighting(testFileNum)
++    
++    # orientation (50 seems to be a good number for most cases)
++    results[2] = evaluateOrientation(testFileNum, 50)
++    
++    # focus (missing, leave false for the moment)
++    #results[3] = evaluateFocus(...)
++    
++    return results
+\ No newline at end of file
+    src/main.py - modified
+@@ -6,11 +6,8 @@
+ from PIL import Image
+ import csv
+ 
+-# Array for storing the results of each image
+-results = [[]] # Format -> [orientation, centering, brightness, focus]
+-
+ # Write to a CSV file the evaluation results
+-def writeToCsv():
++def writeToCsv(results):
+     fields = ['Image', 'Orientation', 'Centering', 'Brightness', 'Focus']
+     file = "../Results.csv"
+     with open(file, 'w') as csvFile:
+@@ -20,6 +17,9 @@ def writeToCsv():
+ 
+ 
+ def main():
++    # Array for storing the results of each image
++    results = [[]] # Format -> [orientation, centering, brightness, focus]
++    
+     try:
+         fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
+                      21, 22, 24, 26, 27, 28, 29, 32, 36]
+    test/centering_test.py - added
+@@ -0,0 +1,23 @@
++from paths import main_path
++import sys
++sys.path.append(main_path)
++
++from include.centering import evaluateCentering
++
++def main() -> None:
++    # Evaluate centering offset to reference image for all images
++    # Evaluate all images recursivelly
++    fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
++                     21, 22, 24, 26, 27, 28, 29, 32, 36]
++    
++    for fileNum in fileIndex:
++        print(f"Checking image {fileNum}:\n")
++        test_result = evaluateCentering(str(fileNum), 'REF_23', 10)
++        if test_result:
++            print(f'Image {fileNum} NOT is compliant.')
++        else:
++            print(f'Image {fileNum} is compliant.')
++        print("--------------------")
++
++if __name__ == "__main__":
++    main()
+    test/evaluateAll.py - added
+@@ -0,0 +1,8 @@
++'''
++Test the implementation of evaluateAll function.
++'''
++
++def main() -> None:
++    fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
++                 21, 22, 24, 26, 27, 28, 29, 32, 36]
++    
+\ No newline at end of file
+    test/lighting_prototype.py - added
+@@ -0,0 +1,114 @@
++import cv2
++import numpy as np
++from PIL import Image
++
++def find_white_shapes(image_path, output_path):
++    # Open the image
++    image = Image.open(image_path)
++
++    # Convert the image to grayscale
++    image_gray = image.convert('L')
++
++    # Convert the grayscale image to a NumPy array
++    image_array = np.array(image_gray)
++
++    # Calculate the center coordinates
++    center_x, center_y = image_array.shape[1] // 2, image_array.shape[0] // 2
++
++    # Define the width and height of the area you want to crop
++    crop_width = 200  # Adjust this value as needed
++    crop_height = 200  # Adjust this value as needed
++
++    # Calculate the coordinates for cropping
++    x1 = center_x - crop_width // 2
++    x2 = center_x + crop_width // 2
++    y1 = center_y - crop_height // 2
++    y2 = center_y + crop_height // 2
++
++    # Crop the image to the desired region
++    cropped_image_array = image_array[y1:y2, x1:x2]
++
++    # Apply Canny edge detection to the cropped image
++    edges = cv2.Canny(cropped_image_array, 250, 200)
++
++    # Find contours in the binary image
++    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
++
++    # Create a three-channel image with white lines
++    white_lines = np.zeros((crop_height, crop_width, 3), dtype=np.uint8)
++    white_lines[edges != 0] = (255, 255, 255)  # White color in BGR format
++
++    # Draw the contours on the white_lines image
++    cv2.drawContours(white_lines, contours, -1, (255, 0, 0), 2)
++
++    # Save the image with white contours
++    Image.fromarray(white_lines).save(output_path)
++
++    # Adjust contour coordinates for the cropping
++    for contour in contours:
++        for point in contour:
++            x, y = point[0]
++            # Adjust the coordinates to account for the cropping
++            x += x1
++            y += y1
++            print(f"Contour Coordinate: x={x}, y={y}")
++
++    return contours
++
++# Specify the path to the input image file
++input_image_path = "REF_23.PNG"
++
++# Specify the path to the output image with white contours
++output_image_path = "White_Contours_new.png"
++
++# Perform edge detection and find white shapes (contours)
++contours = find_white_shapes(input_image_path, output_image_path)
++
++def measure_image_intensity(image_path):
++    # Open the image
++    image = Image.open(image_path)
++
++    # Convert the image to grayscale
++    image_gray = image.convert('L')
++
++    # Convert the grayscale image to a NumPy array
++    image_array = np.array(image_gray)
++
++    # Find contours in the binary image
++    edges = cv2.Canny(image_array, 250, 200)
++    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
++
++    # Find the minimum and maximum X and Y coordinates among all contours
++    min_x = min(contour[:, 0, 0].min() for contour in contours)
++    max_x = max(contour[:, 0, 0].max() for contour in contours)
++    min_y = min(contour[:, 0, 1].min() for contour in contours)
++    max_y = max(contour[:, 0, 1].max() for contour in contours)
++
++    # Define the region for intensity measurement, moving 5 pixels away from the edge
++    center_x = (min_x + max_x) // 2
++    center_y = (min_y + max_y) // 2
++    region_width = 200  # Adjust this value as needed
++    region_height = 200  # Adjust this value as needed
++
++    x1 = max(center_x - region_width // 2, min_x + 5)
++    x2 = min(center_x + region_width // 2, max_x - 5)
++    y1 = max(center_y - region_height // 2, min_y + 5)
++    y2 = min(center_y + region_height // 2, max_y - 5)
++
++    # Crop the image to the defined region
++    cropped_image_array = image_array[y1:y2, x1:x2]
++
++    # Calculate the average intensity in the cropped region
++    average_intensity = np.mean(cropped_image_array)
++
++    return average_intensity
++
++# Specify the path to the input image file
++input_image_path = "REF_23.PNG"
++
++# Perform intensity measurement
++average_intensity = measure_image_intensity(input_image_path)
++
++# Output the result
++print(f"Average Intensity: {average_intensity}")
++
+    test/orientation_test.py - modified
+@@ -1,5 +1,4 @@
+ from paths import main_path
+-
+ import sys
+ sys.path.append(main_path)
+ 
+------------------------------
+CodingMaster8, 2023-11-09 : Lightning Function Added
+
+Tests images lightning
+    include/iluminacion.py - added
+@@ -0,0 +1,101 @@
++import cv2
++
++#1.Read the Image and convert it to Grayscale Format
++
++imagen = cv2.imread("../data/24.PNG")
++
++#Parametro de entrada debe ser una imagen leida con cv2.image()
++
++def iluminacion(image):
++
++    crop_img = image[100:350, 100:500]
++    #cv2.imwrite('new_img.jpg', crop_img)
++
++    # convert the image to grayscale format
++    img_gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
++
++    #2. Apply Binary Thresholding
++
++    # apply binary thresholding
++    ret, thresh = cv2.threshold(img_gray, 100, 255, cv2.THRESH_BINARY)
++
++    # visualize the binary image
++
++    #cv2.imwrite('image_thres1.jpg', thresh)
++
++
++
++    #3. Find the Contours
++
++    # detect the contours on the binary image using cv2.CHAIN_APPROX_NONE
++    contours, hierarchy = cv2.findContours(image=thresh, mode=cv2.RETR_TREE, method=cv2.CHAIN_APPROX_SIMPLE)
++
++
++    #4.  draw contours on the original image
++    image_copy = crop_img.copy()
++    cv2.drawContours(image=image_copy, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=1,
++                     lineType=cv2.LINE_AA)
++
++    # see the result
++    #cv2.imwrite('contours_none_image1.jpg', image_copy)
++
++    list_light = []
++
++    for x, y in enumerate(contours[1]):
++        list_light.append(y)
++
++
++    # Initialize variables to store the sum of RGB values
++    total_red = 0
++    total_green = 0
++    total_blue = 0
++    count = 0
++
++    print("/////////////////")
++
++    for x in list_light:
++        element1 = x[0][0]  # First integer
++        element2 = x[0][1]  # Second integer
++        print(f"First element: {element1}, Second element: {element2}")
++
++        if element1 < 235:
++            element1 -= 5
++        elif element1 > 235:
++            element1 += 5
++        if element2 < 100:
++            element2 -= 5
++        elif element2 > 100:
++            element2 += 5
++
++        pixel_color = crop_img[element2, element1]
++        blue, green, red = pixel_color
++
++        print(f"RGB color of pixel ({element1}, {element2}): ({red}, {green}, {blue})")
++
++        total_red += red
++        total_green += green
++        total_blue += blue
++        count += 1
++
++
++    # Calculate the mean RGB color
++    mean_red = total_red // count
++    mean_green = total_green // count
++    mean_blue = total_blue // count
++
++    color_mean = (mean_red + mean_blue + mean_green) / 3
++
++    print("/////")
++    print(f"Mean RGB color of the specified range: ({mean_red}, {mean_green}, {mean_blue})")
++    print(f"Mean Color : {color_mean}")
++
++    if 170 <= color_mean <= 230:
++        print("Image with lightning within range")
++    else:
++        print("Image lightning not in range")
++
++
++iluminacion(imagen)
++
++
++
+------------------------------
+José María Soto valenzuela, 2023-11-08 : measure_image_intensity
+
+Measuring Image Intensity without considering the fade
+    include/lighting.py - modified
+@@ -64,8 +64,7 @@ def find_white_shapes(image_path, output_path):
+ # Perform edge detection and find white shapes (contours)
+ contours = find_white_shapes(input_image_path, output_image_path)
+ 
+-
+-def find_white_shapes(image_path, output_path):
++def measure_image_intensity(image_path):
+     # Open the image
+     image = Image.open(image_path)
+ 
+@@ -75,55 +74,41 @@ def find_white_shapes(image_path, output_path):
+     # Convert the grayscale image to a NumPy array
+     image_array = np.array(image_gray)
+ 
+-    # Calculate the center coordinates
+-    center_x, center_y = image_array.shape[1] // 2, image_array.shape[0] // 2
+-
+-    # Define the width and height of the area you want to crop
+-    crop_width = 200  # Adjust this value as needed
+-    crop_height = 200  # Adjust this value as needed
+-
+-    # Calculate the coordinates for cropping
+-    x1 = center_x - crop_width // 2
+-    x2 = center_x + crop_width // 2
+-    y1 = center_y - crop_height // 2
+-    y2 = center_y + crop_height // 2
+-
+-    # Crop the image to the desired region
+-    cropped_image_array = image_array[y1:y2, x1:x2]
+-
+-    # Apply Canny edge detection to the cropped image
+-    edges = cv2.Canny(cropped_image_array, 250, 200)
+-
+     # Find contours in the binary image
++    edges = cv2.Canny(image_array, 250, 200)
+     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+ 
+-    # Create a three-channel image with white lines
+-    white_lines = np.zeros((crop_height, crop_width, 3), dtype=np.uint8)
+-    white_lines[edges != 0] = (255, 255, 255)  # White color in BGR format
++    # Find the minimum and maximum X and Y coordinates among all contours
++    min_x = min(contour[:, 0, 0].min() for contour in contours)
++    max_x = max(contour[:, 0, 0].max() for contour in contours)
++    min_y = min(contour[:, 0, 1].min() for contour in contours)
++    max_y = max(contour[:, 0, 1].max() for contour in contours)
+ 
+-    # Draw the contours on the white_lines image
+-    cv2.drawContours(white_lines, contours, -1, (255, 0, 0), 2)
++    # Define the region for intensity measurement, moving 5 pixels away from the edge
++    center_x = (min_x + max_x) // 2
++    center_y = (min_y + max_y) // 2
++    region_width = 200  # Adjust this value as needed
++    region_height = 200  # Adjust this value as needed
+ 
+-    # Save the image with white contours
+-    Image.fromarray(white_lines).save(output_path)
++    x1 = max(center_x - region_width // 2, min_x + 5)
++    x2 = min(center_x + region_width // 2, max_x - 5)
++    y1 = max(center_y - region_height // 2, min_y + 5)
++    y2 = min(center_y + region_height // 2, max_y - 5)
+ 
+-    # Adjust contour coordinates for the cropping
+-    for contour in contours:
+-        for point in contour:
+-            x, y = point[0]
+-            # Adjust the coordinates to account for the cropping
+-            x += x1
+-            y += y1
+-            print(f"Contour Coordinate: x={x}, y={y}")
++    # Crop the image to the defined region
++    cropped_image_array = image_array[y1:y2, x1:x2]
+ 
+-    return contours
++    # Calculate the average intensity in the cropped region
++    average_intensity = np.mean(cropped_image_array)
++
++    return average_intensity
+ 
+ # Specify the path to the input image file
+ input_image_path = "REF_23.PNG"
+ 
+-# Specify the path to the output image with white contours
+-output_image_path = "White_Contours_new.png"
++# Perform intensity measurement
++average_intensity = measure_image_intensity(input_image_path)
+ 
+-# Perform edge detection and find white shapes (contours)
+-contours = find_white_shapes(input_image_path, output_image_path)
++# Output the result
++print(f"Average Intensity: {average_intensity}")
+ 
+------------------------------
+José María Soto valenzuela, 2023-11-08 : lighting_mean
+    include/lighting.py - modified
+@@ -63,3 +63,67 @@ def find_white_shapes(image_path, output_path):
+ 
+ # Perform edge detection and find white shapes (contours)
+ contours = find_white_shapes(input_image_path, output_image_path)
++
++
++def find_white_shapes(image_path, output_path):
++    # Open the image
++    image = Image.open(image_path)
++
++    # Convert the image to grayscale
++    image_gray = image.convert('L')
++
++    # Convert the grayscale image to a NumPy array
++    image_array = np.array(image_gray)
++
++    # Calculate the center coordinates
++    center_x, center_y = image_array.shape[1] // 2, image_array.shape[0] // 2
++
++    # Define the width and height of the area you want to crop
++    crop_width = 200  # Adjust this value as needed
++    crop_height = 200  # Adjust this value as needed
++
++    # Calculate the coordinates for cropping
++    x1 = center_x - crop_width // 2
++    x2 = center_x + crop_width // 2
++    y1 = center_y - crop_height // 2
++    y2 = center_y + crop_height // 2
++
++    # Crop the image to the desired region
++    cropped_image_array = image_array[y1:y2, x1:x2]
++
++    # Apply Canny edge detection to the cropped image
++    edges = cv2.Canny(cropped_image_array, 250, 200)
++
++    # Find contours in the binary image
++    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
++
++    # Create a three-channel image with white lines
++    white_lines = np.zeros((crop_height, crop_width, 3), dtype=np.uint8)
++    white_lines[edges != 0] = (255, 255, 255)  # White color in BGR format
++
++    # Draw the contours on the white_lines image
++    cv2.drawContours(white_lines, contours, -1, (255, 0, 0), 2)
++
++    # Save the image with white contours
++    Image.fromarray(white_lines).save(output_path)
++
++    # Adjust contour coordinates for the cropping
++    for contour in contours:
++        for point in contour:
++            x, y = point[0]
++            # Adjust the coordinates to account for the cropping
++            x += x1
++            y += y1
++            print(f"Contour Coordinate: x={x}, y={y}")
++
++    return contours
++
++# Specify the path to the input image file
++input_image_path = "REF_23.PNG"
++
++# Specify the path to the output image with white contours
++output_image_path = "White_Contours_new.png"
++
++# Perform edge detection and find white shapes (contours)
++contours = find_white_shapes(input_image_path, output_image_path)
++
+------------------------------
+David-OC17, 2023-11-08 : lighting_1
+    .gitignore - modified
+@@ -1,3 +1,6 @@
++# Ignore paths for absolute module imports
++/test/paths.py
++
+ # Byte-compiled / optimized / DLL files
+ __pycache__/
+ *.py[cod]
+    README.md - modified
+@@ -1,4 +1,15 @@
+ # ImageQualityEvaluation_Bosch
+ Evaluation of ADAS camera images for Bosch Hackathon.
+ 
+-The size of all the images is 640 *480 pixels.
+\ No newline at end of file
++The size of all the images is 640 by 480 pixels.
++
++
++## Centering
++
++## Focus
++
++## Lighting 
++
++## Orientation
++To be considered with the right orientation, the image must have one of the black reference squared at the center, and the other one at the top right corner. 
++If the corner square is out of place, then the image has incorrect orientation. The tests consists of defining a _window_ where the top right black reference square should be if oriented correctly, and checking if the average brightness of the region is as low is would need to be for the square to be the reference square.
+\ No newline at end of file
+    Results.csv - modified
+@@ -1,2 +1,22 @@
+ Image,Orientation,Centering,Brightness,Focus
++1.PNG,True
++2.PNG,True
++4.PNG,True
++8.PNG,False
++9.PNG,True
++11.PNG,True
++12.PNG,True
++14.PNG,True
++18.PNG,True
++19.PNG,True
++20.PNG,True
++21.PNG,True
++22.PNG,True
++24.PNG,True
++26.PNG,True
++27.PNG,True
++28.PNG,True
++29.PNG,True
++32.PNG,True
++36.PNG,False
+ 
+    include/Include.md - modified
+@@ -0,0 +1,11 @@
++# Include
++
++Inside this directory we provide modules for evaluating the 4 different aspects of the image, as requested.
++
++The implementations focus on evaluating:
++* Centering
++* Focus
++* Lighting
++* Orientation
++
++All evaluations return a boolean value, representing if the image passed the defined trial or test.
+\ No newline at end of file
+    include/lighting.py - modified
+@@ -0,0 +1,65 @@
++import cv2
++import numpy as np
++from PIL import Image
++
++def find_white_shapes(image_path, output_path):
++    # Open the image
++    image = Image.open(image_path)
++
++    # Convert the image to grayscale
++    image_gray = image.convert('L')
++
++    # Convert the grayscale image to a NumPy array
++    image_array = np.array(image_gray)
++
++    # Calculate the center coordinates
++    center_x, center_y = image_array.shape[1] // 2, image_array.shape[0] // 2
++
++    # Define the width and height of the area you want to crop
++    crop_width = 200  # Adjust this value as needed
++    crop_height = 200  # Adjust this value as needed
++
++    # Calculate the coordinates for cropping
++    x1 = center_x - crop_width // 2
++    x2 = center_x + crop_width // 2
++    y1 = center_y - crop_height // 2
++    y2 = center_y + crop_height // 2
++
++    # Crop the image to the desired region
++    cropped_image_array = image_array[y1:y2, x1:x2]
++
++    # Apply Canny edge detection to the cropped image
++    edges = cv2.Canny(cropped_image_array, 250, 200)
++
++    # Find contours in the binary image
++    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
++
++    # Create a three-channel image with white lines
++    white_lines = np.zeros((crop_height, crop_width, 3), dtype=np.uint8)
++    white_lines[edges != 0] = (255, 255, 255)  # White color in BGR format
++
++    # Draw the contours on the white_lines image
++    cv2.drawContours(white_lines, contours, -1, (255, 0, 0), 2)
++
++    # Save the image with white contours
++    Image.fromarray(white_lines).save(output_path)
++
++    # Adjust contour coordinates for the cropping
++    for contour in contours:
++        for point in contour:
++            x, y = point[0]
++            # Adjust the coordinates to account for the cropping
++            x += x1
++            y += y1
++            print(f"Contour Coordinate: x={x}, y={y}")
++
++    return contours
++
++# Specify the path to the input image file
++input_image_path = "REF_23.PNG"
++
++# Specify the path to the output image with white contours
++output_image_path = "White_Contours_new.png"
++
++# Perform edge detection and find white shapes (contours)
++contours = find_white_shapes(input_image_path, output_image_path)
+    include/orientation.py - modified
+@@ -43,7 +43,7 @@ def evaluateTopRightCorner(image:Image, maxBrightness:int ) -> bool:
+     if selection.width > 0 and selection.height > 0:
+         # Calculate the statistics for the selected region
+         mean = ImageStat.Stat(selection).mean
+-        print("Mean:", mean)
++        #print("Mean:", mean)
+     else:
+         print("Selected region is empty, cannot calculate the mean.")
+ 
+    requirements.txt - renamed
+Previous filename: include/__init__.py - New filename: requirements.txt
+    src/main.py - modified
+@@ -28,15 +28,15 @@ def main():
+         path = "../data/REF_23.PNG"
+         refImg = Image.open(path)
+ 
+-        # Images to evaluate 
+-        index = 1
+-        imgName = str(index) + ".PNG"
+-        path = "../data/" + imgName
+-        evImg = Image.open(path)
+-        
+         # Evaluation section
+-        for img in fileIndex:
+-            print()
++        for index in range(len(fileIndex)):
++            path = f"../data/{fileIndex[index]}.PNG"
++            evImg = Image.open(path)
++            oriented = evaluateTopRightCorner(evImg, 50)
++            # Append elements to results
++            results.append(list())
++            results[index].append(f"{fileIndex[index]}.PNG")
++            results[index].append(str(oriented))
+         
+         # Write results to a csv file
+         writeToCsv()
+    test/orientation_test.py - modified
+@@ -1,5 +1,7 @@
++from paths import main_path
++
+ import sys
+-sys.path.append('/home/david/Documents/Code/BoschHackathon/ImageQualityEvaluation_Bosch')
++sys.path.append(main_path)
+ 
+ from include.orientation import evaluateTopRightCorner
+ from PIL import Image
+------------------------------
+David-OC17, 2023-11-08 : Orientation evaluation working
+    data/TEST.PNG - added
+Blank File
+    data/TEST2.PNG - added
+Blank File
+    include/__init__.py - added
+Blank File
+    include/orientation.py - modified
+@@ -22,23 +22,24 @@ def evaluateTopRightCorner(image:Image, maxBrightness:int ) -> bool:
+     '''    
+     # Determine the relative path to the images
+     # path = f"../data/{filename}"
+-        
+-    # Define the position and size of the kernel
+-    y_size = 50
+-    x_size = 50
+-    
+-    # The position is given by the starting point of the image, which is the bottom left corner
+-    y_top, y_bottom = 480 - 20, 480 - 20 - y_size
+-    x_left, x_right = 515, 515 + x_size
++
++    # Get the dimensions of the image
++    width, height = image.size
++
++    # Define the position and size of the crop
++    crop_width = 50
++    crop_height = 50
++    x_left = width - crop_width - 80
++    x_right = width - 80
++    y_top = 0 + 20
++    y_bottom = crop_height + 20
++
++    # Crop the top right corner
++    selection = image.crop((x_left, y_top, x_right, y_bottom))
+     
+     # Convert the image to B&B
+     image = image.convert('L')
+     
+-    # Calculate the mean of the region specified by the position and size of the kernel
+-    # Crop to the wanted region
+-    selection = image.crop((x_left, y_bottom, x_right, y_top))
+-    selection.show()
+-    
+     if selection.width > 0 and selection.height > 0:
+         # Calculate the statistics for the selected region
+         mean = ImageStat.Stat(selection).mean
+    include/orientation_test.py - removed
+@@ -1,25 +0,0 @@
+-# import sys
+-# sys.path.append("../include/")
+-
+-from orientation import evaluateTopRightCorner
+-from PIL import Image
+-
+-def main() -> None:
+-    try:
+-        # Reference image
+-        path = "../data/REF_23.PNG"
+-        refImg = Image.open(path)
+-        maxBrightness = 50
+-
+-        over = evaluateTopRightCorner(refImg, maxBrightness)
+-        
+-        if over:
+-            print(f"Image {path} is oriented correctly")
+-        else:
+-            print(f"Image {path} is NOT oriented correctly")
+-
+-    except Exception as ex:
+-        print(ex)    
+-
+-if __name__ == '__main__':
+-    main()
+\ No newline at end of file
+    src/main.py - modified
+@@ -1,13 +1,15 @@
++# Custom paths
++import sys
++sys.path.append('/home/david/Documents/Code/BoschHackathon/ImageQualityEvaluation_Bosch')
++from include.orientation import evaluateTopRightCorner
++
+ from PIL import Image
+ import csv
+ 
+-# Custom implementations
+-from ..include import orientation
+-
+ # Array for storing the results of each image
+ results = [[]] # Format -> [orientation, centering, brightness, focus]
+ 
+-
++# Write to a CSV file the evaluation results
+ def writeToCsv():
+     fields = ['Image', 'Orientation', 'Centering', 'Brightness', 'Focus']
+     file = "../Results.csv"
+@@ -33,7 +35,8 @@ def main():
+         evImg = Image.open(path)
+         
+         # Evaluation section
+-        print(orientation.evaluateTopRightCorner(evImg))
++        for img in fileIndex:
++            print()
+         
+         # Write results to a csv file
+         writeToCsv()
+    test/orientation_test.py - added
+@@ -0,0 +1,35 @@
++import sys
++sys.path.append('/home/david/Documents/Code/BoschHackathon/ImageQualityEvaluation_Bosch')
++
++from include.orientation import evaluateTopRightCorner
++from PIL import Image
++
++def evaluateOrientation(num:int) -> None:
++    try:
++        # Reference image
++        path = f"../data/{num}.PNG"
++        refImg = Image.open(path)
++        maxBrightness = 50
++
++        over = evaluateTopRightCorner(refImg, maxBrightness)
++        
++        if over:
++            print(f"Image {path} is oriented correctly")
++        else:
++            print(f"Image {path} is NOT oriented correctly")
++
++    except Exception as ex:
++        print(ex)    
++
++def main() -> None:
++    # Evaluate all images recursivelly
++    fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
++                     21, 22, 24, 26, 27, 28, 29, 32, 36]
++    
++    for fileNum in fileIndex:
++        print(f"Checking image {fileNum}:\n")
++        evaluateOrientation(fileNum)
++        print("--------------------")
++
++if __name__ == '__main__':
++    main()
+\ No newline at end of file
+------------------------------
+David-OC17, 2023-11-08 : Orientation test (half-way)
+    README.md - modified
+@@ -1,2 +1,4 @@
+ # ImageQualityEvaluation_Bosch
+ Evaluation of ADAS camera images for Bosch Hackathon.
++
++The size of all the images is 640 *480 pixels.
+\ No newline at end of file
+    Results.csv - added
+@@ -0,0 +1,2 @@
++Image,Orientation,Centering,Brightness,Focus
++
+    include/orientation.py - modified
+@@ -1,3 +1,53 @@
+ '''
+-The purpose of this of this file is to 
+-'''
+\ No newline at end of file
++The purpose of this of this file is to present a way to evaluate if the orientation of the iamges is the correct one.
++To be considered with the right orientation, the image must have one of the black reference squared at the center, and the other one at the top right corner. 
++If the corner square is out of place, then the image has incorrect orientation.
++
++Dimensions of the kernel for brightness evaluation: 50 * 50 pixels
++
++Absolute position of kernel for evaluation:
++515 (x) left - right
++30 (y) top - bottom
++'''
++
++from PIL import Image
++from PIL import ImageStat
++
++# Assume that all images are of size 640 * 480 pixels
++def evaluateTopRightCorner(image:Image, maxBrightness:int ) -> bool:
++    '''
++    Checks whether the kernel has a mean lightness below a threshold and returns if it is below it.
++    Is below the value: true
++    Is NOT below the value: false
++    '''    
++    # Determine the relative path to the images
++    # path = f"../data/{filename}"
++        
++    # Define the position and size of the kernel
++    y_size = 50
++    x_size = 50
++    
++    # The position is given by the starting point of the image, which is the bottom left corner
++    y_top, y_bottom = 480 - 20, 480 - 20 - y_size
++    x_left, x_right = 515, 515 + x_size
++    
++    # Convert the image to B&B
++    image = image.convert('L')
++    
++    # Calculate the mean of the region specified by the position and size of the kernel
++    # Crop to the wanted region
++    selection = image.crop((x_left, y_bottom, x_right, y_top))
++    selection.show()
++    
++    if selection.width > 0 and selection.height > 0:
++        # Calculate the statistics for the selected region
++        mean = ImageStat.Stat(selection).mean
++        print("Mean:", mean)
++    else:
++        print("Selected region is empty, cannot calculate the mean.")
++
++    # Return if the average is below or above what is expected
++    if mean[0] > maxBrightness:
++        return False
++    else:
++        return True
+\ No newline at end of file
+    include/orientation_test.py - added
+@@ -0,0 +1,25 @@
++# import sys
++# sys.path.append("../include/")
++
++from orientation import evaluateTopRightCorner
++from PIL import Image
++
++def main() -> None:
++    try:
++        # Reference image
++        path = "../data/REF_23.PNG"
++        refImg = Image.open(path)
++        maxBrightness = 50
++
++        over = evaluateTopRightCorner(refImg, maxBrightness)
++        
++        if over:
++            print(f"Image {path} is oriented correctly")
++        else:
++            print(f"Image {path} is NOT oriented correctly")
++
++    except Exception as ex:
++        print(ex)    
++
++if __name__ == '__main__':
++    main()
+\ No newline at end of file
+    src/main.py - added
+@@ -0,0 +1,45 @@
++from PIL import Image
++import csv
++
++# Custom implementations
++from ..include import orientation
++
++# Array for storing the results of each image
++results = [[]] # Format -> [orientation, centering, brightness, focus]
++
++
++def writeToCsv():
++    fields = ['Image', 'Orientation', 'Centering', 'Brightness', 'Focus']
++    file = "../Results.csv"
++    with open(file, 'w') as csvFile:
++        writer = csv.writer(csvFile)
++        writer.writerow(fields)
++        writer.writerows(results)
++
++
++def main():
++    try:
++        fileIndex = [1, 2, 4, 8, 9, 11, 12, 14, 18, 19, 20, 
++                     21, 22, 24, 26, 27, 28, 29, 32, 36]
++        
++        # Reference image
++        path = "../data/REF_23.PNG"
++        refImg = Image.open(path)
++
++        # Images to evaluate 
++        index = 1
++        imgName = str(index) + ".PNG"
++        path = "../data/" + imgName
++        evImg = Image.open(path)
++        
++        # Evaluation section
++        print(orientation.evaluateTopRightCorner(evImg))
++        
++        # Write results to a csv file
++        writeToCsv()
++
++    except Exception as ex:
++        print(ex)
++
++if __name__ == '__main__':
++    main()
+\ No newline at end of file
+------------------------------
+David-OC17, 2023-11-08 : Added initial separation
+    include/centering.py - added
+Blank File
+    include/focus.py - added
+Blank File
+    include/lighting.py - added
+Blank File
+    include/orientation.py - added
+@@ -0,0 +1,3 @@
++'''
++The purpose of this of this file is to 
++'''
+\ No newline at end of file
+------------------------------
+David-OC17, 2023-11-08 : Added initial separation
+    app/App.md - added
+Blank File
+    include/Include.md - added
+Blank File
+    src/Src.md - added
+Blank File
+------------------------------
+David-OC17, 2023-11-08 : Added data (all images)
+    data/1.PNG - added
+Blank File
+    data/11.PNG - added
+Blank File
+    data/12.PNG - added
+Blank File
+    data/14.PNG - added
+Blank File
+    data/18.PNG - added
+Blank File
+    data/19.PNG - added
+Blank File
+    data/2.PNG - added
+Blank File
+    data/20.PNG - added
+Blank File
+    data/21.PNG - added
+Blank File
+    data/22.PNG - added
+Blank File
+    data/24.PNG - added
+Blank File
+    data/26.PNG - added
+Blank File
+    data/27.PNG - added
+Blank File
+    data/28.PNG - added
+Blank File
+    data/29.PNG - added
+Blank File
+    data/32.PNG - added
+Blank File
+    data/36.PNG - added
+Blank File
+    data/4.PNG - added
+Blank File
+    data/8.PNG - added
+Blank File
+    data/9.PNG - added
+Blank File
+    data/REF_23.PNG - added
+Blank File
+------------------------------

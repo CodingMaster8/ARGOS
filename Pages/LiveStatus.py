@@ -3,19 +3,17 @@ from query_db import fetch_repo_tables, fetch_records_in_date_range, fetch_all_d
 from openai import OpenAI
 import os
 
+from datetime import date
+
 ## Set the API key and model name
 MODEL = "gpt-4o-mini"
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "sk-proj-PPVvLU4BgKkl4dEhZRIOT3BlbkFJ4VcKrBv9z8XY8a8zdiVE"))
 
 # Configure the Streamlit page
 st.set_page_config(page_title="Github Commit Beta", page_icon="🧑‍💼")
-st.header("Commit History LLM")
+st.header("Live Status Of Users")
 
-def get_data(table, start, end):
-    try:
-        data = fetch_records_in_date_range(f"{table}_commits", start, end)
-    except:
-        st.error("Date / Commit History not generated yet")
+
 
 def get_data_by_author(table, author, start, end):
     try:
@@ -23,6 +21,7 @@ def get_data_by_author(table, author, start, end):
         return data
     except:
         st.error("Date / Commit History not generated yet")
+
 
 def get_repos():
     repos = fetch_repo_tables()
@@ -74,6 +73,19 @@ def popup(table, author):
         data = get_data_by_author(table, author, start, end)
         generate_response(data)
 
+def find_commit_with_most_recent_date(data):
+    most_recent_date = date.min
+    most_recent_commit = None
+
+    for key, lists in data.items():
+        current_date = lists[0][2] if lists else date.min
+
+        if current_date > most_recent_date:
+            most_recent_date = current_date
+            most_recent_commit = key
+
+    return most_recent_commit
+
 
 def run():
     table = get_repos()
@@ -83,10 +95,8 @@ def run():
     unique_authors = {t[1] for t in all_commits}
 
     for author in unique_authors:
-        with st.expander(f"{author}", icon=":material/person:"):
-            st.write(f"Commits by {author}")
-            if st.button(f"Generate Report of {author}"):
-                popup(table, author)
+        with st.expander(f"{author}", icon=":material/person:", expanded=True):
+            #st.write(f"Commits by {author}")
             commits = [t for t in all_commits if t[1] == author]
 
             # Group commits by message
@@ -97,16 +107,18 @@ def run():
                     commits_by_message[message] = []
                 commits_by_message[message].append(commit)
 
-            with st.container(height=300):
-                history = ""
-                for message, commits in commits_by_message.items():
-                    history = f"{message} --- \n"
-                    #st.write(f"--- Commit : {message} ---")
-                    with st.container():
-                        for commit in commits:
-                            history = history + f"{commit[2]} - {commit[4]} - {commit[5]} \n"
-                            #st.code(f"{commit[2]} - {commit[4]} - {commit[5]}", language='bash')
-                        st.code(history, language='bash')
+            recent_commit_key = find_commit_with_most_recent_date(commits_by_message)
+
+            recent_commit = commits_by_message[recent_commit_key]
+
+            with st.container():
+                history = f"{recent_commit_key} --- \n"
+                with st.container():
+                    for commit in recent_commit:
+                        history = history + f"{commit[2]} - {commit[4]} - {commit[5]} \n"
+                    st.code(history, language='bash')
+            if st.button(f"Live Status Report of {author}"):
+                popup(table, author)
 
 
 if 'report' not in st.session_state:
@@ -114,9 +126,3 @@ if 'report' not in st.session_state:
 
 run()
 
-start_date = st.sidebar.date_input("Start Date", value=None)
-
-end_date = st.sidebar.date_input("End Date", value=None)
-
-if st.sidebar.button("Search For Commits"):
-    get_data(table, start_date, end_date)

@@ -40,6 +40,29 @@ def create_table(name):
     cursor.close()
     conn.close()
 
+def create_table_commits(name):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    name = name.replace("-", "_")
+
+    create_table_query = f"""
+            CREATE TABLE IF NOT EXISTS {name}_commits (
+            id SERIAL PRIMARY KEY,
+            author VARCHAR(255),
+            date DATE,
+            comment TEXT,
+            filename VARCHAR(255),
+            action VARCHAR(50),
+            code TEXT )
+            """
+    cursor.execute(create_table_query)
+    print(f"New table {name}_commits created successfully")
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
 def insert_to_db(table, url, filename, content):
     """Insert a file into the database"""
     conn = connect_db()
@@ -113,6 +136,23 @@ def fetch_all_table_names():
     table_names = [table[0] for table in tables]
     return table_names
 
+def fetch_repo_tables():
+    """Fetch all table names in the database, excluding those ending with 'commits'."""
+    conn = connect_db()
+    cur = conn.cursor()
+    query = """
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name NOT LIKE '%commits'
+    """
+    cur.execute(query)
+    tables = cur.fetchall()
+    cur.close()
+    conn.close()
+    table_names = [table[0] for table in tables]
+    return table_names
+
 def fetch_all_data(table_name):
     """Fetch all data from the specified table."""
     conn = connect_db()
@@ -151,6 +191,7 @@ def get_filenames(table):
 
     return filenames
 
+
 def get_shorturl(table):
     conn = connect_db()
     cursor = conn.cursor()
@@ -167,6 +208,7 @@ def get_shorturl(table):
     urls = ['/'.join(url[0].rsplit('/', 2)[-2:]) for url in urls]
 
     return urls
+
 
 def search_by_shorturl(table, shorturl):
     conn = connect_db()
@@ -188,6 +230,58 @@ def search_by_shorturl(table, shorturl):
     else:
         print(f"File {shorturl} not found.")
         return None
+
+
+def insert_to_db_commits(table, author, date, comment, filename, action, code):
+    """Insert a file into the database"""
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # query
+    insert_data_query = f"""
+        INSERT INTO {table} (author, date, comment, filename, action, code)
+        VALUES (%s, %s, %s, %s, %s, %s);
+        """
+    cursor.execute(insert_data_query, (f'{author}', f'{date}', f'{comment}', f'{filename}', f'{action}', f'{code}'))
+
+    # Commit the transaction
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print(f"Data inserted successfully")
+
+
+def fetch_records_in_date_range(table, start_date, end_date):
+    """Fetch records from the database within a specific date range."""
+    conn = connect_db()
+    cur = conn.cursor()
+    query = f"""
+        SELECT *
+        FROM {table}
+        WHERE date BETWEEN %s AND %s
+    """
+    cur.execute(query, (start_date, end_date))
+    records = cur.fetchall()
+    cur.close()
+    conn.close()
+    return records
+
+
+def fetch_records_in_date_range_and_author(table, author, start_date, end_date):
+    """Fetch records from the database within a specific date range and author."""
+    conn = connect_db()
+    cur = conn.cursor()
+    query = f"""
+        SELECT *
+        FROM {table}
+        WHERE date BETWEEN %s AND %s
+        AND author = %s
+    """
+    cur.execute(query, (start_date, end_date, author))
+    records = cur.fetchall()
+    cur.close()
+    conn.close()
+    return records
 
 """
 

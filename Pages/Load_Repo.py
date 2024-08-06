@@ -2,7 +2,7 @@ import streamlit as st
 
 from data_gather import ContextGatherer
 from download_github import starts_with_pattern, download_github_repo
-from query_db import create_table, fetch_file
+from query_db import create_table, create_table_commits
 
 import time
 import json
@@ -24,6 +24,7 @@ def load_repo():
         table_name = '/'.join(file.split('/')[-2:]).replace('/', '_').replace('-', '_')
 
         create_table(table_name)
+        create_table_commits(table_name)
 
         st.spinner("Processing Tree...")
         start = time.time()

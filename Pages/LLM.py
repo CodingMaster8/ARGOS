@@ -1,6 +1,6 @@
 import streamlit as st
 
-from query_db import fetch_all_table_names, fetch_file, get_shorturl, search_by_shorturl
+from query_db import fetch_repo_tables, fetch_file, get_shorturl, search_by_shorturl
 
 from openai import OpenAI
 import os
@@ -121,7 +121,7 @@ def generate_response(prompt, data):
     return tokens
 
 def get_repos():
-    repos = fetch_all_table_names()
+    repos = fetch_repo_tables()
 
     if len(repos) > 0:
         repo = st.sidebar.selectbox("Choose a repo", repos)

@@ -1,12 +1,12 @@
 import streamlit as st
-from query_db import fetch_all_table_names
+from query_db import fetch_repo_tables
 import json
 
 st.header("Code Tree")
 
 st.sidebar.header("Visualize Github Tree Of The Repo")
 
-repos = fetch_all_table_names()
+repos = fetch_repo_tables()
 repo = st.sidebar.selectbox("Select Repo", repos)
 
 def get_tree(repo):

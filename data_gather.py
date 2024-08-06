@@ -5,7 +5,7 @@ import yaml
 import logging
 import requests
 
-from query_db import insert_to_db
+from query_db import insert_to_db, insert_to_db_commits
 
 """ LOGGING is used for making better console outputs/warnings"""
 # Set up logging
@@ -145,7 +145,7 @@ class ContextGatherer:
                 commit_history_data.append(f"COMMIT HISTORY OF REPOSITORY: {author}-{name}\n")
                 for commit in commits:
                     sha = commit['sha']
-                    author = commit['commit']['author']['name']
+                    commit_author = commit['commit']['author']['name']
                     date = commit['commit']['author']['date'].split('T')[0]  # Extract the date part only
                     message = commit['commit']['message']
 
@@ -155,9 +155,23 @@ class ContextGatherer:
                     if commit_response.status_code == 200 or commit_response.status_code == 404:
                         commit_data = commit_response.json()
                         files_changed = commit_data.get('files', [])
-                        commit_history_data.append(f"{author}, {date} : {message}\n")
+                        commit_history_data.append(f"{commit_author}, {date} : {message}\n")
+
                         for file_changed in files_changed:
+                            status = file_changed['status']
+                            filename = file_changed['filename']
+
                             commit_history_data.append(f"    {file_changed['filename']} - {file_changed['status']}\n")
+
+                            if file_changed['status'] == 'renamed':
+                                code = f"Previous filename: {file_changed['previous_filename']} - New filename: {file_changed['filename']}"
+                            else:
+                                try:
+                                    code = file_changed['patch']
+                                except:
+                                    code = "Blank File"
+                            insert_to_db_commits(f'{self.table}_commits', commit_author, date, message, filename, status, code)
+
                         commit_history_data.append("------------------------------\n")
                     else:
                         commit_history_data.append(f"Failed to fetch commit details: {commit_response.status_code}\n")
