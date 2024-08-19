@@ -35,8 +35,7 @@ def local_search(table, directory, code):
 directory = "vector_stores"
 table = "microsoft_graphrag"
 
-"""
-context = local_search(table, directory, code)
 
-print(context)
-"""
+#context = local_search(table, directory, code)
+
+

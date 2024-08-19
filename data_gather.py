@@ -1,11 +1,17 @@
 import os
-import fnmatch
-import re
-import yaml
 import logging
 import requests
+from datetime import datetime
 
 from query_db import insert_to_db, insert_to_db_commits
+from query_db import insert_to_db_pr, insert_to_db_pr_files
+from query_db import commit_exist
+from query_db import file_exists_in_db, update_file_in_db
+from query_db import update_filepath_in_db
+
+from apscheduler.schedulers.background import BackgroundScheduler
+
+
 
 """ LOGGING is used for making better console outputs/warnings"""
 # Set up logging
@@ -25,232 +31,259 @@ logger.setLevel(log_level)
 
 
 class ContextGatherer:
-    def __init__(self, directory='.', output_file='context.txt',
-                 relevant_extensions=None, max_file_size=1_000_000, max_tokens=128000, repo='.', table='.'):
-        self.directory = directory
-        self.output_file = output_file
+    def __init__(self,
+                 relevant_extensions=None, repo='.', table='.', github_token='.', owner='.', name='.'):
         self.relevant_extensions = relevant_extensions or ['.py']
-        self.max_file_size = max_file_size
-        self.max_tokens = int(max_tokens)
-        self.ignore_patterns = self.get_ignore_patterns()
         self.repo = repo
         self.table = table
-
-    def get_ignore_patterns(self):
-        """Read .gitignore file and return ignore patterns."""
-
-        settings_path = os.path.join(self.directory, 'settings.yaml')
-        if os.path.exists(settings_path):
-            with open(settings_path, 'r') as f:
-                settings = yaml.safe_load(f)
-                if 'code' in settings and 'ignore_files' in settings['code']:
-                    logger.debug(f"Ignored settings.yaml files: {settings['code']['ignore_files']}")
-                    return settings['code']['ignore_files']
-
-        # If settings.yaml doesn't exist, get from env variable
-        ignore_files_env = os.getenv("PRAISONAI_IGNORE_FILES")
-        if ignore_files_env:
-            logger.debug(f"Ignored PRAISONAI_IGNORE_FILES ENV files: {ignore_files_env}")
-            return ignore_files_env.split(",")
-
-        default_patterns = [".*", "*.pyc", "__pycache__", ".git", ".gitignore", ".vscode",
-                            ".idea", ".DS_Store", "*.lock", "*.pyc", ".env",
-                            "docs", "tests", "test", "tmp", "temp",
-                            "*.txt", "*.md", "*.json", "*.csv", "*.tsv", "public",
-                            "*.sql", "*.sqlite", "*.db", "*.db3", "*.sqlite3", "*.log", "*.zip", "*.gz",
-                            "*.tar", "*.rar", "*.7z", "*.pdf", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.svg",
-                            "cookbooks", "assets", "__pycache__", "dist", "build", "node_modules", "venv"]
-        gitignore_path = os.path.join(self.directory, '.gitignore')
-        if os.path.exists(gitignore_path):
-            with open(gitignore_path, 'r') as f:
-                gitignore_patterns = [line.strip() for line in f if line.strip() and not line.startswith('#')]
-            logger.debug(f"Ignored gitignore and default files: {ignore_files_env}")
-            return list(set(default_patterns + gitignore_patterns))
-        return default_patterns
-
-    def should_ignore(self, file_path):
-        """Check if a file should be ignored based on patterns."""
-        relative_path = os.path.relpath(file_path, self.directory)
-        if relative_path.startswith('.'):
-            return True
-        for pattern in self.ignore_patterns:
-            if fnmatch.fnmatch(relative_path, pattern):
-                return True
-        return False
+        self.github_token = github_token
+        self.repo_owner = owner
+        self.repo_name = name
+        self.since = None  # Initial since value is None
 
     def is_relevant_file(self, file_path):
         """Determine if a file is relevant for the context."""
-        if os.path.getsize(file_path) > self.max_file_size:
-            return False
         return any(file_path.endswith(ext) for ext in self.relevant_extensions)
 
-    def gather_context(self):
-        """Gather context from relevant files in the directory."""
-        context = []
-        total_files = sum(len(files) for _, _, files in os.walk(self.directory))
-        processed_files = 0
+    def gather_context(self, path=""):
+        """Gather context from relevant files in the GitHub repository."""
+        BASE_URL = f"https://api.github.com/repos/{self.repo_owner}/{self.repo_name}/contents/"
+        url = BASE_URL + path
+        headers = {"Authorization": f"token {self.github_token}"}
+        #params = {"since": self.since.strftime('%Y-%m-%dT00:00:00Z')} if self.since else {}
 
-        for root, dirs, files in os.walk(self.directory):
-            dirs[:] = [d for d in dirs if not self.should_ignore(os.path.join(root, d))]
-            for file in files:
-                file_path = os.path.join(root, file)
-                filelink = file_path.split("repos/")[1]
-                filename = filelink.split("/")[-1]
-                if not self.should_ignore(file_path) and self.is_relevant_file(file_path):
+        response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            raise Exception(f"Failed to fetch repository contents: {response.status_code}")
+
+        contents = response.json()
+
+        for item in contents:
+            if item['type'] == 'file':
+                file_path = item['path']
+                if self.is_relevant_file(file_path):
                     try:
-                        with open(file_path, 'r', encoding='utf-8') as f:
-                            content = f.read()
-                            context.append(f"File: {file_path}\n\n{content}\n\n{'=' * 50}\n")
-                            insert_to_db(self.table, filelink, filename, content)
+                        filename = item['name']
+                        file_content = requests.get(item['download_url']).text
+                        if file_exists_in_db(self.table, file_path):
+                            update_file_in_db(self.table, file_path, filename, file_content)
+                        else:
+                            insert_to_db(self.table, file_path, filename, file_content)
                     except Exception as e:
                         print(f"Error reading {file_path}: {e}")
-                processed_files += 1
-                print(f"\rProcessed {processed_files}/{total_files} files", end="", flush=True)
+
+                print(f"\rProcessed {file_path}", end="", flush=True)
+
+            elif item['type'] == 'dir':
+                # Recursively fetch the files in the directory
+                self.gather_context(path=item['path'])
+
         print()  # New line after progress indicator
-        return '\n'.join(context)
 
-    def count_tokens(self, text):
-        """Count the number of tokens in the given text using a simple tokenizer."""
-        # Split on whitespace and punctuation
-        tokens = re.findall(r'\b\w+\b|[^\w\s]', text)
-        return len(tokens)
+    def commit_history(self):
 
-    def truncate_context(self, context):
-        """Truncate context to fit within the specified token limit."""
-        tokens = re.findall(r'\b\w+\b|[^\w\s]', context)
-        if len(tokens) > self.max_tokens:
-            truncated_tokens = tokens[:self.max_tokens]
-            return ' '.join(truncated_tokens)
-        return context
+        # GitHub API URL for commits
+        url = f"https://api.github.com/repos/{self.repo_owner}/{self.repo_name}/commits"
 
-    def commit_history(self, owner, name):
-            token = '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'
+        headers = {"Authorization": f"token {self.github_token}"}
+        #params = {"since": self.since.strftime('%Y-%m-%dT00:00:00Z')} if self.since else {}
 
-            # GitHub API URL for commits
-            url = f"https://api.github.com/repos/{owner}/{name}/commits"
+        # Parameters for pagination
+        params = {
+            'per_page': 100,  # Maximum number of results per page
+            'page': 1  # Starting page number
+        }
 
-            # Headers for authenticated requests
-            headers = {
-                'Authorization': f'token {token}'
-            }
-
+        while True:
             # Make a GET request to fetch the commit history
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, params=params)
 
             if response.status_code == 200 or response.status_code == 404:
                 author, name = url.split('/')[-3:-1]
                 commits = response.json()
-                commit_history_data = []
+                if not commits:  # Check if there are no more commits
+                    break  # Exit the loop if no commits are retrieved
 
-                commit_history_data.append(f"COMMIT HISTORY OF REPOSITORY: {author}-{name}\n")
                 for commit in commits:
                     sha = commit['sha']
                     commit_author = commit['commit']['author']['name']
                     date = commit['commit']['author']['date'].split('T')[0]  # Extract the date part only
                     message = commit['commit']['message']
 
-                    # Get the details of the commit
-                    commit_url = f"https://api.github.com/repos/{author}/{name}/commits/{sha}"
-                    commit_response = requests.get(commit_url, headers=headers)
-                    if commit_response.status_code == 200 or commit_response.status_code == 404:
-                        commit_data = commit_response.json()
-                        files_changed = commit_data.get('files', [])
-                        commit_history_data.append(f"{commit_author}, {date} : {message}\n")
+                    # Check if the commit already exists in the database
+                    if not commit_exist(f'{self.table}_commits', sha):
 
-                        for file_changed in files_changed:
-                            status = file_changed['status']
-                            filename = file_changed['filename']
+                        # Get the details of the commit
+                        commit_url = f"https://api.github.com/repos/{author}/{name}/commits/{sha}"
+                        commit_response = requests.get(commit_url, headers=headers)
+                        if commit_response.status_code == 200 or commit_response.status_code == 404:
+                            commit_data = commit_response.json()
+                            files_changed = commit_data.get('files', [])
 
-                            commit_history_data.append(f"    {file_changed['filename']} - {file_changed['status']}\n")
+                            for file_changed in files_changed:
+                                status = file_changed['status']
+                                filename = file_changed['filename']
 
-                            if file_changed['status'] == 'renamed':
-                                code = f"Previous filename: {file_changed['previous_filename']} - New filename: {file_changed['filename']}"
-                            else:
-                                try:
-                                    code = file_changed['patch']
-                                except:
-                                    code = "Blank File"
-                            insert_to_db_commits(f'{self.table}_commits', commit_author, date, message, filename, status, code)
-
-                        commit_history_data.append("------------------------------\n")
-                    else:
-                        commit_history_data.append(f"Failed to fetch commit details: {commit_response.status_code}\n")
+                                if file_changed['status'] == 'renamed':
+                                    code = f"Previous filename: {file_changed['previous_filename']} - New filename: {file_changed['filename']}"
+                                else:
+                                    try:
+                                        code = file_changed['patch']
+                                    except:
+                                        code = "Blank File"
+                                insert_to_db_commits(f'{self.table}_commits', sha, commit_author, date, message, filename,
+                                                     status, code)
+                        else:
+                            print(f"Failed to fetch commit details: {commit_response.status_code}\n")
+                # Increment the page number for the next iteration
+                params['page'] += 1
             else:
                 print(f"Failed to fetch commits: {response.status_code}")
-                return
+                break
 
-            context = ''.join(commit_history_data)  # Combine the list into a single string for the context
+    def get_pull_requests(self):
 
-            #Add to database
-            insert_to_db(self.table, url, "commits", context)
+        token = self.github_token
 
-    def save_context(self, context):
-        """Save the gathered context to a file."""
-        with open(self.output_file, 'a', encoding='utf-8') as f:
-            f.write(context)
+        headers = {
+            'Authorization': f'token {token}',
+            'Accept': 'application/vnd.github.v3+json'
+        }
 
-    def get_context_tree(self):
-        """Generate a formatted tree structure of the folder, including only relevant files."""
-        tree = []
-        start_dir = os.path.abspath(self.directory)
+        # GitHub API URL for pull requests
+        url = f'https://api.github.com/repos/{self.repo_owner}/{self.repo_name}/pulls'
+        response = requests.get(url, headers=headers)
 
-        def add_to_tree(path, prefix=''):
-            contents = sorted(os.listdir(path))
-            pointers = [('└── ' if i == len(contents) - 1 else '├── ') for i in range(len(contents))]
-            for pointer, name in zip(pointers, contents):
-                full_path = os.path.join(path, name)
-                if self.should_ignore(full_path):
-                    continue
+        # Check if the request was successful
+        if response.status_code == 200:
+            pull_requests = response.json()
 
-                rel_path = os.path.relpath(full_path, start_dir)
-                tree.append(f"{prefix}{pointer}{name}")
+            for pr in pull_requests:
+                number = pr['number']
+                author = pr['user']['login']
+                date = pr['created_at'].split('T')[0]
+                title = pr['title']
+                state = pr['state']
+                branch = pr['head']['ref']
+                merge = pr['base']['ref']
 
-                if os.path.isdir(full_path):
-                    add_to_tree(full_path, prefix + ('    ' if pointer == '└── ' else '│   '))
-                elif self.is_relevant_file(full_path):
-                    continue  # We've already added the file to the tree
+                insert_to_db_pr(self.table, number, author, date, title, state, branch, merge)
 
-        add_to_tree(start_dir)
-        return '\n'.join(tree)
+                try:
+                    pr_commits = f'https://api.github.com/repos/{self.repo_owner}/{self.repo_name}/pulls/{number}/files'
+                    response_commits = requests.get(pr_commits, headers=headers)
 
-    def clear_file(self):
-        """Clear the content of the output file."""
-        with open(self.output_file, 'w', encoding='utf-8') as f:
-            f.write('')
+                    if response_commits.status_code == 200:
+                        commits_requests = response_commits.json()
+                        for commit in commits_requests:
+                            filename = commit['filename']
+                            status = commit['status']
+                            code = commit['patch']
+
+                            insert_to_db_pr_files(self.table, number, filename, status, code)
+                except:
+                    print("Error getting files")
+
+
+        else:
+            print(f"Failed to retrieve pull requests: {response.status_code}")
+
+    def update(self):
+
+        # GitHub API URL for commits
+        url = f"https://api.github.com/repos/{self.repo_owner}/{self.repo_name}/commits"
+
+        headers = {"Authorization": f"token {self.github_token}"}
+
+        # Parameters for pagination
+        params = {
+            'per_page': 100,  # Maximum number of results per page
+            'page': 1  # Starting page number
+        }
+
+        if self.since:
+            params['since'] = self.since  # Add the 'since' parameter to the request
+
+        print(f'Updating Repo since {self.since}')
+        while True:
+            # Make a GET request to fetch the commit history
+            response = requests.get(url, headers=headers, params=params)
+
+            if response.status_code == 200 or response.status_code == 404:
+                author, name = url.split('/')[-3:-1]
+                commits = response.json()
+                if not commits:  # Check if there are no more commits
+                    break  # Exit the loop if no commits are retrieved
+
+                for commit in commits:
+                    sha = commit['sha']
+                    commit_author = commit['commit']['author']['name']
+                    date = commit['commit']['author']['date'].split('T')[0]  # Extract the date part only
+                    message = commit['commit']['message']
+
+                    # Check if the commit already exists in the database
+                    if not commit_exist(f'{self.table}_commits', sha):
+
+                        # Get the details of the commit
+                        commit_url = f"https://api.github.com/repos/{author}/{name}/commits/{sha}"
+                        commit_response = requests.get(commit_url, headers=headers)
+                        if commit_response.status_code == 200 or commit_response.status_code == 404:
+                            commit_data = commit_response.json()
+                            files_changed = commit_data.get('files', [])
+
+                            for file_changed in files_changed:
+                                status = file_changed['status']
+                                filename = file_changed['filename']
+
+                                if file_changed['status'] == 'renamed':
+                                    code = f"Previous filename: {file_changed['previous_filename']} - New filename: {file_changed['filename']}"
+                                    if self.is_relevant_file(filename):
+                                        update_filepath_in_db(self.table, file_changed['filename'], file_changed['previous_filename'])
+                                else:
+                                    try:
+                                        code = file_changed['patch']
+                                        if self.is_relevant_file(filename):
+                                            content_url = f"https://api.github.com/repos/{self.repo_owner}/{self.repo_name}/contents/{filename}"
+                                            content_response = requests.get(content_url, headers=headers)
+                                            if content_response.status_code != 200:
+                                                raise Exception(f"Failed to fetch repository contents: {content_response.status_code}")
+                                            content_data = content_response.json()
+                                            code = requests.get(content_data['download_url']).text
+                                            file = filename.split('/')[-1]
+
+                                            update_file_in_db(self.table, filename, file, code)
+                                    except:
+                                        code = "Blank File"
+                                insert_to_db_commits(f'{self.table}_commits', sha, commit_author, date, message, filename,
+                                                     status, code)
+                        else:
+                            print(f"Failed to fetch commit details: {commit_response.status_code}\n")
+                # Increment the page number for the next iteration
+                params['page'] += 1
+            else:
+                print(f"Failed to fetch commits: {response.status_code}")
+                break
+
+        self.since = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        print(f'Repo succesfully updated until {self.since}')
 
     def run(self):
+        print(self.since)
         """Run the context gathering process and return the context and token count."""
-        context = self.gather_context()
-        context = self.truncate_context(context)
-        token_count = self.count_tokens(context)
+        self.gather_context()
         print(f"Context gathered successfully.")
-        print(f"Total number of tokens (estimated): {token_count}")
-        self.clear_file()
-        url = self.repo
-        owner, name = url.split("/")[-2:]
-        self.commit_history(owner, name)
-        self.save_context(context)
-        context_tree = self.get_context_tree()
-        print("\nContext Tree Structure:")
-        print(context_tree)
+        self.commit_history()
+        print(f"Commits gathered successfully.")
+        self.get_pull_requests()
+        print(f"Pulls gathered successfully.")
+        self.since = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
-        return context, token_count, context_tree
-
-
-def main():
-    gatherer = ContextGatherer(
-        directory='/Users/pablovargas/PycharmProjects/ARGOS',
-        output_file='context.txt',
-        relevant_extensions=['.py'],
-        max_file_size=500_000,  # 500KB
-        max_tokens=120000
-    )
-    context, token_count, context_tree = gatherer.run()
-    print(f"\nThe context contains approximately {token_count} tokens.")
-    print("characters length of context:")
-    print(len(context))
+    def start_scheduler(self):
+        """Start the APScheduler to run the process every 12 hours."""
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(self.update, 'interval', minutes=2)
+        scheduler.start()
+        print("Scheduler started. The data gathering process will run every 12 hours.")
 
 
 
-if __name__ == "__main__":
-    main()

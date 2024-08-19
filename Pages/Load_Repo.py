@@ -1,74 +1,56 @@
+import os
+
 import streamlit as st
 
 from data_gather import ContextGatherer
-from download_github import starts_with_pattern, download_github_repo
-from query_db import create_table, create_table_commits
+from query_db import create_table, create_table_commits, create_table_pr, create_table_pr_files
 
 import time
-import json
+from datetime import datetime
+from dotenv import load_dotenv
 
-def load_repo():
-    repo = st.text_input("Repo", "https://github.com/Polo280/KL25Z_Labs")
-    branch = st.text_input("Branch", "main")
+load_dotenv()
 
+
+def load_repo(repo):
     if st.button("Load data into the database"):
-
-        st.spinner("Fetching Repo Data...")
-        start = time.time()
-        progress = st.progress(0, "Fetching Repo Data")
-        download_github_repo(str(repo))
-        duration = time.time() - start
-        progress.progress(100, f"Fetching Repo Data took {duration} seconds")
-
         file = str(repo)
         table_name = '/'.join(file.split('/')[-2:]).replace('/', '_').replace('-', '_')
 
+        owner, name = file.split("/")[-2:]
+
         create_table(table_name)
         create_table_commits(table_name)
+        create_table_pr(table_name)
+        create_table_pr_files(table_name)
 
-        st.spinner("Processing Tree...")
-        start = time.time()
-        progress = st.progress(0, f"Processing Tree of Repo {table_name}")
+        github_token = os.environ.get('GITHUB_TOKEN')
+
         gatherer = ContextGatherer(
-            directory='/Users/pablovargas/Documents/repos',
-            output_file='../context.txt',
-            relevant_extensions=['.py', '.c', '.cpp', '.js', '.v'],
-            max_file_size=500_000,  # 500KB
-            max_tokens=60000,
+            relevant_extensions=['.py', '.c', '.cpp', '.js', '.v', '.ts'],
             repo=str(repo),
-            table=table_name
+            table=table_name,
+            github_token=github_token,
+            owner=owner,
+            name=name
         )
-        context, token_count, context_tree = gatherer.run()
 
+        st.spinner("Processing Filecodes...")
+        start = time.time()
+        progress = st.progress(0, f"Processing Filecodes of Repo {table_name}")
+        gatherer.gather_context()
+        progress.progress(40, f"Processing Commits of Repo {table_name}")
+        gatherer.commit_history()
+        progress.progress(70, f"Processing Pull Requests of Repo {table_name}")
+        gatherer.get_pull_requests()
         duration = time.time() - start
-        progress.progress(100, f"Processing Tree took {duration} seconds")
+        progress.progress(100, f"Processing Repo took {duration} seconds")
 
-        st.code(f"Token count: {token_count} \n{context_tree}", language="bash")
+        gatherer.since = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
-        tree_key = {
-            f'{table_name.lower()}' : f'{context_tree}'
-        }
+        gatherer.start_scheduler()
+        st.success("Scheduler started. The data gathering process will run every 2 minutes.")
 
-        # Path to the JSON file
-        file_path = 'trees.json'
-
-        add_data_to_json(file_path, tree_key)
-
-
-def add_data_to_json(file_path, new_data):
-    # Load existing data
-    try:
-        with open(file_path, 'r') as file:
-            data = json.load(file)
-    except FileNotFoundError:
-        data = {}
-
-    # Update with new data
-    data.update(new_data)
-
-    # Save the updated data back to the JSON file
-    with open(file_path, 'w') as file:
-        json.dump(data, file, indent=4)
 
 st.set_page_config(page_title="Load Repo Data", page_icon="💿")
 
@@ -77,5 +59,10 @@ st.sidebar.header("Load Repo Data")
 st.write(
     """Load Repo Data!"""
 )
-load_repo()
+
+repo = st.text_input("Repo", "https://github.com/Polo280/KL25Z_Labs")
+branch = st.text_input("Branch", "main")
+
+load_repo(repo)
+
 

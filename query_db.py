@@ -49,6 +49,7 @@ def create_table_commits(name):
     create_table_query = f"""
             CREATE TABLE IF NOT EXISTS {name}_commits (
             id SERIAL PRIMARY KEY,
+            sha TEXT,
             author VARCHAR(255),
             date DATE,
             comment TEXT,
@@ -63,6 +64,53 @@ def create_table_commits(name):
     cursor.close()
     conn.close()
 
+def create_table_pr(name):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    name = name.replace("-", "_")
+
+    create_table_query = f"""
+            CREATE TABLE IF NOT EXISTS {name}_pr (
+            number INTEGER PRIMARY KEY,
+            author VARCHAR(255),
+            date DATE,
+            title TEXT,
+            state VARCHAR(50),
+            branch VARCHAR(50),
+            merge VARCHAR(50) 
+            )
+            """
+    cursor.execute(create_table_query)
+    print(f"New table {name}_pr created successfully")
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def create_table_pr_files(name):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    name = name.replace("-", "_")
+
+    create_table_query = f"""
+            CREATE TABLE IF NOT EXISTS {name}_pr_files (
+            id SERIAL PRIMARY KEY,
+            number INTEGER,
+            filename VARCHAR(255),
+            status VARCHAR(50),
+            code TEXT )
+            """
+    cursor.execute(create_table_query)
+    print(f"New table {name}_pr_files created successfully")
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+
+#FileCodes
 def insert_to_db(table, url, filename, content):
     """Insert a file into the database"""
     conn = connect_db()
@@ -83,6 +131,38 @@ def insert_to_db(table, url, filename, content):
     cursor.close()
     conn.close()
     print(f"File {filename} inserted successfully")
+
+def file_exists_in_db(table, file_path):
+    """Check if a file path already exists in the database."""
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    query = f"SELECT COUNT(1) FROM {table} WHERE url = %s"
+    cursor.execute(query, (file_path,))
+    exists = cursor.fetchone()[0] > 0
+    cursor.close()
+    return exists
+
+def update_file_in_db(table , file_path, filename, content):
+    """Update the file content in the database."""
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    query = f"UPDATE {table} SET content = %s WHERE url = %s"
+    cursor.execute(query, (content, file_path))
+    cursor.close()
+    print(f"File {filename} updated successfully")
+
+def update_filepath_in_db(table , new_file_path, old_file_path):
+    """Update the filename in the database."""
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    query = f"UPDATE {table} SET url = %s WHERE url = %s"
+    cursor.execute(query, (new_file_path, old_file_path))
+    cursor.close()
+    print(f"File {new_file_path} updated successfully")
+
 
 def delete_file(table, filename):
     """Delete a file from the database based on filename"""
@@ -145,6 +225,9 @@ def fetch_repo_tables():
         FROM information_schema.tables
         WHERE table_schema = 'public'
           AND table_name NOT LIKE '%commits'
+          AND table_name NOT LIKE '%pr_files'
+          AND table_name NOT LIKE '%pr'
+
     """
     cur.execute(query)
     tables = cur.fetchall()
@@ -232,17 +315,17 @@ def search_by_shorturl(table, shorturl):
         return None
 
 
-def insert_to_db_commits(table, author, date, comment, filename, action, code):
+def insert_to_db_commits(table, sha, author, date, comment, filename, action, code):
     """Insert a file into the database"""
     conn = connect_db()
     cursor = conn.cursor()
 
     # query
     insert_data_query = f"""
-        INSERT INTO {table} (author, date, comment, filename, action, code)
-        VALUES (%s, %s, %s, %s, %s, %s);
+        INSERT INTO {table} (sha, author, date, comment, filename, action, code)
+        VALUES (%s, %s, %s, %s, %s, %s, %s);
         """
-    cursor.execute(insert_data_query, (f'{author}', f'{date}', f'{comment}', f'{filename}', f'{action}', f'{code}'))
+    cursor.execute(insert_data_query, (f'{sha}', f'{author}', f'{date}', f'{comment}', f'{filename}', f'{action}', f'{code}'))
 
     # Commit the transaction
     conn.commit()
@@ -276,6 +359,7 @@ def fetch_records_in_date_range_and_author(table, author, start_date, end_date):
         FROM {table}
         WHERE date BETWEEN %s AND %s
         AND author = %s
+        ORDER BY date DESC
     """
     cur.execute(query, (start_date, end_date, author))
     records = cur.fetchall()
@@ -283,11 +367,97 @@ def fetch_records_in_date_range_and_author(table, author, start_date, end_date):
     conn.close()
     return records
 
+def fetch_records_in_date_range_author_comment(table, author, start_date, end_date, comment):
+    """Fetch records from the database within a specific date range and author."""
+    conn = connect_db()
+    cur = conn.cursor()
+    query = f"""
+        SELECT *
+        FROM {table}
+        WHERE date BETWEEN %s AND %s
+        AND author = %s
+        AND comment = %s
+    """
+    cur.execute(query, (start_date, end_date, author, comment))
+    records = cur.fetchall()
+    cur.close()
+    conn.close()
+    return records
+
+def commit_exist(table, sha):
+    """Looks if a commit already exist in the table"""
+    conn = connect_db()
+    cur = conn.cursor()
+    query = f"""
+            SELECT COUNT(1)
+            FROM {table}
+            WHERE sha = %s
+        """
+    cur.execute(query, (sha, ))
+    commit_count = cur.fetchone()[0]
+    cur.close()
+    conn.close()
+
+    return commit_count > 0
+
+#pull requests queries
+def insert_to_db_pr(table, number, author, date, title, state, branch, merge):
+    """Insert a file into the database"""
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # query
+    insert_data_query = f"""
+        INSERT INTO {table}_pr (number, author, date, title, state, branch, merge)
+        VALUES (%s, %s, %s, %s, %s, %s, %s);
+        """
+    cursor.execute(insert_data_query, (f'{int(number)}', f'{author}', f'{date}', f'{title}', f'{state}', f'{branch}',f'{merge}'))
+
+    # Commit the transaction
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print(f"Data inserted successfully")
+
+def insert_to_db_pr_files(table, number, filename, status, code):
+    """Insert a file into the database"""
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # query
+    insert_data_query = f"""
+        INSERT INTO {table}_pr_files (number, filename, status, code)
+        VALUES (%s, %s, %s, %s);
+        """
+    cursor.execute(insert_data_query, (f'{int(number)}', f'{filename}', f'{status}', f'{code}'))
+
+    # Commit the transaction
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print(f"Data inserted successfully")
+
+def fetch_records_by_pr_number(table, number):
+    """Fetch records from the database within a specific Pull Request number"""
+    conn = connect_db()
+    cur = conn.cursor()
+    query = f"""
+        SELECT *
+        FROM {table}
+        WHERE number = %s
+    """
+    cur.execute(query, (number,))
+    records = cur.fetchall()
+    cur.close()
+    conn.close()
+    return records
+
+
 """
 
 print(fetch_all_table_names())
 
-d = fetch_all_data('polo280_kl25z_labs')
+d = fetch_all_data('codingmaster8_argos_commits')
 for i in d:
     print(i)
 
@@ -298,3 +468,5 @@ file = search_by_shorturl('polo280_kl25z_labs', 'PCB Inspector/PCB_Inspect.c')
 print(file)
 
 """
+
+

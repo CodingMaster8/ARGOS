@@ -5,10 +5,12 @@ from query_db import fetch_repo_tables, fetch_file, get_shorturl, search_by_shor
 from openai import OpenAI
 import os
 import json
+from dotenv import load_dotenv
+
 
 from local_search import local_search
 
-
+load_dotenv()
 
 # Configure the Streamlit page
 st.set_page_config(page_title="Github LLM Beta", page_icon="🧑‍💼")
@@ -19,7 +21,7 @@ st.sidebar.header("Welcome to the Github LLM Beta")
 
 ## Set the API key and model name
 MODEL = "gpt-4o-mini"
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "sk-proj-PPVvLU4BgKkl4dEhZRIOT3BlbkFJ4VcKrBv9z8XY8a8zdiVE"))
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 
 class TokenCounter:

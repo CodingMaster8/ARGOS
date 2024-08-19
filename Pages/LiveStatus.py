@@ -1,13 +1,17 @@
 import streamlit as st
-from query_db import fetch_repo_tables, fetch_records_in_date_range, fetch_all_data, fetch_records_in_date_range_and_author
+from query_db import fetch_repo_tables, fetch_records_in_date_range, fetch_all_data, fetch_records_in_date_range_author_comment
 from openai import OpenAI
 import os
 
 from datetime import date
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 ## Set the API key and model name
 MODEL = "gpt-4o-mini"
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "sk-proj-PPVvLU4BgKkl4dEhZRIOT3BlbkFJ4VcKrBv9z8XY8a8zdiVE"))
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # Configure the Streamlit page
 st.set_page_config(page_title="Github Commit Beta", page_icon="🧑‍💼")
@@ -15,9 +19,9 @@ st.header("Live Status Of Users")
 
 
 
-def get_data_by_author(table, author, start, end):
+def get_data_by_author(table, author, start, end, comment):
     try:
-        data = fetch_records_in_date_range_and_author(f"{table}_commits", author, start, end)
+        data = fetch_records_in_date_range_author_comment(f"{table}_commits", author, start, end, comment)
         return data
     except:
         st.error("Date / Commit History not generated yet")
@@ -34,7 +38,17 @@ def get_repos():
         return
 
 
-def generate_response(data):
+def generate_response(data, author, commit_date, comment):
+    # Create a unique key for session storage based on author and date range
+    response_key = f"{author}_{commit_date}_{comment}"
+
+    # Check if we already have a saved response for this author and date range
+    if response_key in st.session_state:
+        response = st.session_state[response_key]
+        st.write("Response retrieved from saved data:")
+        st.write(response)
+        return
+
     if "reports" not in st.session_state.keys():  # Initialize the chat messages history
         st.session_state.reports = [
             {"role": "assistant",
@@ -43,7 +57,7 @@ def generate_response(data):
 
     # If last message is not from assistant, generate a new response
     with st.chat_message("assistant"):
-        with st.spinner("Generating Response..."):
+        with st.spinner("Generating Report..."):
             completion = client.chat.completions.create(
                 model=MODEL,
                 messages=[
@@ -59,26 +73,31 @@ def generate_response(data):
             )
             response = completion.choices[0].message.content
             tokens = completion.usage.total_tokens
-            st.write(tokens)
+            st.write(f"Tokens used: {tokens}")
             st.write(response)
+
+            # Save the response in session state
+            st.session_state[response_key] = response
 
 
 @st.experimental_dialog("Generate AI Report", width='large')
-def popup(table, author):
-    st.write(f"Choose a range of dates for {author}")
-    start = st.date_input(f"Start Date - {author}", value=None)
-    end = st.date_input(f"End Date - {author}", value=None)
+def popup(table, author, commit_date, comment, code):
+    st.write(f"Live Report for {author}")
+    start = commit_date
+    end = commit_date
 
-    if st.button("Submit"):
-        data = get_data_by_author(table, author, start, end)
-        generate_response(data)
+    if st.button("Generate Report"):
+        data = get_data_by_author(table, author, start, end, comment)
+        generate_response(data, author, commit_date, comment)
+        #st.code(code, language='python')
+
 
 def find_commit_with_most_recent_date(data):
     most_recent_date = date.min
     most_recent_commit = None
 
     for key, lists in data.items():
-        current_date = lists[0][2] if lists else date.min
+        current_date = lists[0][3] if lists else date.min
 
         if current_date > most_recent_date:
             most_recent_date = current_date
@@ -92,17 +111,17 @@ def run():
     all_commits = fetch_all_data(f"{table}_commits")
 
     # Get unique Authors using set comprehension
-    unique_authors = {t[1] for t in all_commits}
+    unique_authors = {t[2] for t in all_commits}
 
     for author in unique_authors:
         with st.expander(f"{author}", icon=":material/person:", expanded=True):
             #st.write(f"Commits by {author}")
-            commits = [t for t in all_commits if t[1] == author]
+            commits = [t for t in all_commits if t[2] == author]
 
             # Group commits by message
             commits_by_message = {}
             for commit in commits:
-                message = commit[3]
+                message = commit[4]
                 if message not in commits_by_message:
                     commits_by_message[message] = []
                 commits_by_message[message].append(commit)
@@ -113,12 +132,14 @@ def run():
 
             with st.container():
                 history = f"{recent_commit_key} --- \n"
+                commit_date = recent_commit[0][3]
+                code = recent_commit[0][7]
                 with st.container():
                     for commit in recent_commit:
-                        history = history + f"{commit[2]} - {commit[4]} - {commit[5]} \n"
+                        history = history + f"{commit[3]} - {commit[5]} - {commit[6]} \n"
                     st.code(history, language='bash')
             if st.button(f"Live Status Report of {author}"):
-                popup(table, author)
+                popup(table, author, commit_date, recent_commit_key, code)
 
 
 if 'report' not in st.session_state:

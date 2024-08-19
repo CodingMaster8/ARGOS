@@ -1,5 +1,8 @@
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 with open("context.txt", 'r') as file:
   context = file.read()
@@ -7,7 +10,7 @@ with open("context.txt", 'r') as file:
 
 ## Set the API key and model name
 MODEL="gpt-4o-mini"
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "sk-proj-PPVvLU4BgKkl4dEhZRIOT3BlbkFJ4VcKrBv9z8XY8a8zdiVE"))
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 completion = client.chat.completions.create(
   model=MODEL,

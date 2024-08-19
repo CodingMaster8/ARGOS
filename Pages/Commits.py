@@ -2,10 +2,13 @@ import streamlit as st
 from query_db import fetch_repo_tables, fetch_records_in_date_range, fetch_all_data, fetch_records_in_date_range_and_author
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 ## Set the API key and model name
 MODEL = "gpt-4o-mini"
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "sk-proj-PPVvLU4BgKkl4dEhZRIOT3BlbkFJ4VcKrBv9z8XY8a8zdiVE"))
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # Configure the Streamlit page
 st.set_page_config(page_title="Github Commit Beta", page_icon="🧑‍💼")
@@ -80,19 +83,19 @@ def run():
     all_commits = fetch_all_data(f"{table}_commits")
 
     # Get unique Authors using set comprehension
-    unique_authors = {t[1] for t in all_commits}
+    unique_authors = {t[2] for t in all_commits}
 
     for author in unique_authors:
         with st.expander(f"{author}", icon=":material/person:"):
             st.write(f"Commits by {author}")
             if st.button(f"Generate Report of {author}"):
                 popup(table, author)
-            commits = [t for t in all_commits if t[1] == author]
+            commits = [t for t in all_commits if t[2] == author]
 
             # Group commits by message
             commits_by_message = {}
             for commit in commits:
-                message = commit[3]
+                message = commit[4]
                 if message not in commits_by_message:
                     commits_by_message[message] = []
                 commits_by_message[message].append(commit)
@@ -104,8 +107,7 @@ def run():
                     #st.write(f"--- Commit : {message} ---")
                     with st.container():
                         for commit in commits:
-                            history = history + f"{commit[2]} - {commit[4]} - {commit[5]} \n"
-                            #st.code(f"{commit[2]} - {commit[4]} - {commit[5]}", language='bash')
+                            history = history + f"{commit[3]} - {commit[5]} - {commit[6]} \n"
                         st.code(history, language='bash')
 
 
