@@ -109,6 +109,47 @@ def create_table_pr_files(name):
     cursor.close()
     conn.close()
 
+def create_table_task():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    create_table_query = f"""
+                CREATE TABLE IF NOT EXISTS tasks (
+                id SERIAL PRIMARY KEY,
+                task TEXT,
+                status TEXT,
+                repo TEXT,
+                person TEXT,
+                start DATE,
+                deadline DATE
+                )
+                """
+    cursor.execute(create_table_query)
+    print(f"New table tasks created successfully")
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def insert_to_db_task(task, status, repo, person, start, deadline):
+    """Insert a file into the database"""
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # query
+    insert_data_query = f"""
+        INSERT INTO tasks (task, status, repo, person, start, deadline)
+        VALUES (%s, %s, %s, %s, %s, %s);
+        """
+    cursor.execute(insert_data_query, (f'{task}', f'{status}', f'{repo}', f'{person}', f'{start}', f'{deadline}'))
+
+    # Commit the transaction
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print(f"Data inserted successfully")
+
+
 
 #FileCodes
 def insert_to_db(table, url, filename, content):
@@ -162,6 +203,7 @@ def update_filepath_in_db(table , new_file_path, old_file_path):
     cursor.execute(query, (new_file_path, old_file_path))
     cursor.close()
     print(f"File {new_file_path} updated successfully")
+
 
 
 def delete_file(table, filename):
@@ -274,7 +316,6 @@ def get_filenames(table):
 
     return filenames
 
-
 def get_shorturl(table):
     conn = connect_db()
     cursor = conn.cursor()
@@ -291,7 +332,6 @@ def get_shorturl(table):
     urls = ['/'.join(url[0].rsplit('/', 2)[-2:]) for url in urls]
 
     return urls
-
 
 def search_by_shorturl(table, shorturl):
     conn = connect_db()
@@ -468,5 +508,7 @@ file = search_by_shorturl('polo280_kl25z_labs', 'PCB Inspector/PCB_Inspect.c')
 print(file)
 
 """
+
+
 
 

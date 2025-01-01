@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-with open("context.txt", 'r') as file:
+with open("../context.txt", 'r') as file:
   context = file.read()
 
 

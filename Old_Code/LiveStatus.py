@@ -19,7 +19,7 @@ st.header("Live Status Of Users")
 
 
 
-def get_data_by_author(table, author, start, end, comment):
+def live_get_data_by_author(table, author, start, end, comment):
     try:
         data = fetch_records_in_date_range_author_comment(f"{table}_commits", author, start, end, comment)
         return data
@@ -87,7 +87,7 @@ def popup(table, author, commit_date, comment, code):
     end = commit_date
 
     if st.button("Generate Report"):
-        data = get_data_by_author(table, author, start, end, comment)
+        data = live_get_data_by_author(table, author, start, end, comment)
         generate_response(data, author, commit_date, comment)
         #st.code(code, language='python')
 

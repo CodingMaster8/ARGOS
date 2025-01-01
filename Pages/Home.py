@@ -10,7 +10,7 @@ def run():
         page_icon="👋",
     )
 
-    st.write("# Welcome to the Github LLM v2 👋")
+    st.write("# Upkode")
 
     st.write("""
             Please go to the sidebar and:
@@ -41,7 +41,7 @@ with col3:
 
 with col4:
     tile4 = col4.container(height=60)
-    tile4.page_link("Pages/Tree.py", label="Analyze Tree", icon=":material/manage_search:")
+    tile4.page_link("Pages/TaskManager.py", label="Manage Tasks", icon=":material/manage_search:")
 
 
 

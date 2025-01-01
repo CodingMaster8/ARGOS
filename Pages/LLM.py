@@ -119,7 +119,6 @@ def generate_response(prompt, data):
                 response = completion.choices[0].message.content
                 tokens = completion.usage.total_tokens
                 st.session_state.messages.append({"role": "assistant", "content": response})  # Add response to message history
-
     return tokens
 
 def get_repos():
@@ -144,8 +143,10 @@ def get_data(table, query_type):
         shorturls = get_shorturl(table)
         file_url = st.sidebar.selectbox("Choose File", shorturls)
 
-
-        file = file_url.split("/")[1]
+        try:
+            file = file_url.split("/")[1]
+        except:
+            file = file_url
 
         data = search_by_shorturl(table, file_url)[3]
         directory = file_url.split('/')[0]
@@ -163,7 +164,7 @@ def get_data(table, query_type):
 
 def run():
     repo = get_repos()
-    query_type = st.sidebar.selectbox("Query Data", ["Commits", "Code File"])
+    query_type = st.sidebar.selectbox("Query Data", ["Code File"])
     data = get_data(repo, query_type)
     llm(data)
     load_chat_history()
